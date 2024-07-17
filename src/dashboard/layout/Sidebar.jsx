@@ -6,7 +6,7 @@ import Shop from '../../assets/shop.png'
 const Sidebar = () => {
   return (
     <nav>
-      <ul className='space-y-4'>
+      <ul className='space-y-4 position-sidebar'>
         <li>
           <NavLink
             to='/'

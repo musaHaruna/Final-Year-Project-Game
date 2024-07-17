@@ -17,9 +17,12 @@
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: 0;
+  top: 2rem;
+  z-index: 9;
   transform: translateY(-50%);
 }
+
+
 
 .bounce {
   animation: bounce 2s infinite;
@@ -69,4 +72,10 @@
   stroke-dashoffset: 339.292;
   transition: stroke-dashoffset 0.35s;
   stroke-linecap: round;
+}
+
+.inner-button {
+ position: absolute;
+ top: 1.3rem;
+ left: 1.3rem;
 }

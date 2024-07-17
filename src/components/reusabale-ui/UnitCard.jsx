@@ -11,7 +11,7 @@ const UnitCard = ({
 }) => {
   return (
     <div
-      className={`flex items-center justify-between p-4 rounded-md ${bgColor} ${textColor} shadow-lg hover:shadow-xl transition-shadow duration-300`}
+      className={`flex items-center justify-between p-4 rounded-md ${bgColor} ${textColor} shadow-lg `}
     >
       <div>
         <h2 className='text-xl font-bold'>{heading}</h2>
