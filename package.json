@@ -11,10 +11,13 @@
   },
   "dependencies": {
     "@iconify/react": "^5.0.1",
+    "@lottiefiles/dotlottie-react": "^0.8.1",
+    "framer-motion": "^11.3.7",
     "nanoid": "^4.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
+    "react-lottie": "^1.2.4",
     "react-router-dom": "^6.25.0"
   },
   "devDependencies": {

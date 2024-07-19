@@ -43,7 +43,7 @@ const Unit1 = () => {
 
   return (
     <div className='m-auto mt-8'>
-      <div style={{ height: '65vh' }} className='w-11/12 m-auto mt-8'>
+      <div style={{ height: '70vh' }} className='w-11/12 m-auto mt-8'>
         <ProgressBar progress={progress} />
         <CurrentLessonComponent onCheck={handleCheck} />
       </div>

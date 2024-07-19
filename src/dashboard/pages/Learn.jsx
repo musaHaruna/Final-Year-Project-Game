@@ -55,7 +55,7 @@ const Learn = () => {
           text: 'GUIDEBOOK',
           bgColor: 'bg-green-600',
           textColor: 'text-white',
-          shadowColor: 'shadow-green-500/50',
+          shadowColor: 'gray-400',
           icon: 'solar:book-outline',
           onClick: () => alert('Guidebook clicked!'),
         }}
