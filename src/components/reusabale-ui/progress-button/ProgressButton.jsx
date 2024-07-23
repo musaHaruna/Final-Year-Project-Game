@@ -1,3 +1,4 @@
+// ProgressButton.js
 import React from 'react'
 import './ProgressButton.css' // Import the CSS file
 import InnerButton from './InnerButton'
@@ -8,6 +9,7 @@ const ProgressButton = ({
   textColor = '#4d7c0f',
   progress = 0,
   onClick,
+  disabled = false,
 }) => {
   // Determine the button text based on progress
   const buttonText =
@@ -17,9 +19,10 @@ const ProgressButton = ({
     <div className='progress-button-container'>
       {progress !== 0 && (
         <button
-          className='progress-button bounce'
+          className={`progress-button bounce ${disabled ? 'disabled' : ''}`}
           style={{ backgroundColor: buttonColor, color: textColor }}
           onClick={onClick}
+          disabled={disabled}
         >
           {buttonText}
         </button>
@@ -27,13 +30,13 @@ const ProgressButton = ({
       <div className='progress-ring'>
         <div className='inner-button'>
           <InnerButton
-            text='CHECK'
             bgColor='bg-green-500'
             textColor='text-white'
             shadowColor='shadow-green-500/50'
             icon='solar:star-bold'
-            onClick={() => alert('Button clicked!')}
+            onClick={onClick}
             innerProgress={progress}
+            disabled={disabled}
           />
         </div>
 

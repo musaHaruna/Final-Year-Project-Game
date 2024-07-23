@@ -1,3 +1,5 @@
+// InnerButton.js
+import React from 'react'
 import { Icon } from '@iconify/react'
 
 const InnerButton = ({
@@ -13,7 +15,7 @@ const InnerButton = ({
 
   return (
     <button
-      className={`flex items-center justify-center p-6 rounded-full ${buttonColor} ${textColor} shadow-md ${buttonColor} font-semibold hover:shadow-xl transition-shadow duration-300`}
+      className={`flex items-center justify-center p-6 rounded-full ${buttonColor} ${textColor} shadow-md ${shadowColor} font-semibold hover:shadow-xl transition-shadow duration-300`}
       onClick={onClick}
     >
       {icon && <Icon width={30} icon={icon} />}

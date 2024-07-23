@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useProgress } from '../../../context/ProgressContext'
 import {
   ProgressBar,
   NavigationButton,
@@ -7,32 +8,53 @@ import {
   Lesson1,
   Lesson2,
   Lesson3,
-} from '../../../components/dashboard/lessons/fundamentals/index'
+  Lesson4,
+} from '../../../components/dashboard/lessons/fundamentals/variables/index'
 
-const lessonComponents = [Lesson1, Lesson2, Lesson3]
+const lessonComponents = [Lesson1, Lesson2, Lesson3, Lesson4]
 const progressIncrement = 100 / (lessonComponents.length - 1)
 
 const Unit1 = () => {
+  const { state: globalProgress, dispatch } = useProgress() // Access progress context
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0)
-  const [progress, setProgress] = useState(0)
+  const [localProgress, setLocalProgress] = useState(0)
 
+  // Initialize local progress from global progress
+  useEffect(() => {
+    const unitProgress = globalProgress[0] || 0 // Assuming unit 1 is at index 0
+    setLocalProgress(unitProgress)
+  }, [globalProgress])
+
+  // Update progress in context
+  const updateProgress = (newProgress) => {
+    setLocalProgress(newProgress)
+    dispatch({ type: 'UPDATE_PROGRESS', index: 0, progress: newProgress })
+  }
+
+  // Handle navigation
   const handleNext = () => {
     if (currentLessonIndex < lessonComponents.length - 1) {
       setCurrentLessonIndex((prev) => prev + 1)
-      setProgress((prev) => Math.min(prev + progressIncrement, 100))
+      const newProgress = Math.min(localProgress + progressIncrement, 100)
+      updateProgress(newProgress)
+    } else {
+      // Ensure progress is set to 100% when reaching the final lesson
+      updateProgress(100)
     }
   }
 
   const handlePrevious = () => {
     if (currentLessonIndex > 0) {
       setCurrentLessonIndex((prev) => prev - 1)
-      setProgress((prev) => Math.max(prev - progressIncrement, 0))
+      const newProgress = Math.max(localProgress - progressIncrement, 0)
+      updateProgress(newProgress)
     }
   }
 
   const handleCheck = (isCorrect) => {
     if (isCorrect) {
-      setProgress((prev) => Math.min(prev + progressIncrement, 100))
+      const newProgress = Math.min(localProgress + progressIncrement, 100)
+      updateProgress(newProgress)
       alert('Correct!')
     } else {
       alert('Try again!')
@@ -43,11 +65,11 @@ const Unit1 = () => {
 
   return (
     <div className='m-auto mt-8'>
-      <div style={{ height: '70vh' }} className='w-11/12 m-auto mt-8'>
-        <ProgressBar progress={progress} />
+      <div style={{ height: '20%' }} className='w-11/12 m-auto mt-8'>
+        <ProgressBar progress={localProgress} />
         <CurrentLessonComponent onCheck={handleCheck} />
       </div>
-      <hr className='my-10' />
+      <hr />
       <div className='w-11/12 m-auto mt-8'>
         <div className='flex justify-between'>
           <NavigationButton

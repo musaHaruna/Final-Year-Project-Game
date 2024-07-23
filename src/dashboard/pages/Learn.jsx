@@ -1,15 +1,31 @@
-import { useState } from 'react'
+// Learn.js
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { UnitCard, ProgressButton } from '../../components/reusabale-ui/index'
 import { Icon } from '@iconify/react'
+import { useProgress } from '../../context/ProgressContext'
 
 const Learn = () => {
-  const initialProgress = [10, 0, 0, 0, 0, 0]
-  const [progress, setProgress] = useState(initialProgress)
+  const { state: progress, dispatch } = useProgress()
+  const navigate = useNavigate()
 
   const handleButtonClick = (index) => {
-    setProgress((prevProgress) =>
-      prevProgress.map((p, i) => (i === index ? (p >= 100 ? 0 : p + 10) : p))
-    )
+    if (index > 0 && progress[index - 1] < 100) {
+      alert('Complete the previous task first!')
+      return
+    }
+
+    dispatch({ type: 'UPDATE_PROGRESS', index })
+
+    const routes = [
+      '/fundamentals/variables',
+      '/about',
+      // Add more routes as needed
+    ]
+
+    if (index < routes.length) {
+      navigate(routes[index])
+    }
   }
 
   const buttons = [
@@ -44,6 +60,7 @@ const Learn = () => {
       icon: <Icon icon='solar:lock-outline' />,
     },
   ]
+
   return (
     <div>
       <UnitCard
@@ -76,12 +93,13 @@ const Learn = () => {
             }`}
           >
             <ProgressButton
-              text={button.text}
+              text={progress[index] === 100 ? 'REPEAT' : button.text}
               buttonColor={button.buttonColor}
               textColor={button.textColor}
               icon={button.icon}
               progress={progress[index]}
               onClick={() => handleButtonClick(index)}
+              disabled={index > 0 && progress[index - 1] < 100}
             />
           </div>
         ))}

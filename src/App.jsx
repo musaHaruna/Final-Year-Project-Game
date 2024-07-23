@@ -12,7 +12,7 @@ function App() {
           <Route path='practice' element={<Practice />} />
           <Route path='shop' element={<Shop />} />
         </Route>
-        <Route path='/fundamental-lesson-1' element={<Unit1 />} />
+        <Route path='/fundamentals/variables' element={<Unit1 />} />
       </Routes>
     </Router>
   )
