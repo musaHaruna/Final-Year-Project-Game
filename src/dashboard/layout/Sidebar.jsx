@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 import Home from '../../assets/home.png'
 import Dumbbell from '../../assets/dumbbell.png'
 import Shop from '../../assets/shop.png'
-import PopSound from '../../assets/sounds/pop.mp3' // Import the pop sound
+import PopSound from '../../assets/sounds/generic/pop.mp3' // Import the pop sound
 
 const Sidebar = () => {
   const playPopSound = () => {
