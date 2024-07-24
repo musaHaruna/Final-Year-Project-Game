@@ -9,9 +9,10 @@ import {
   Lesson2,
   Lesson3,
   Lesson4,
+  Lesson5,
 } from '../../../components/dashboard/lessons/fundamentals/variables/index'
 
-const lessonComponents = [Lesson1, Lesson2, Lesson3, Lesson4]
+const lessonComponents = [Lesson1, Lesson2, Lesson3, Lesson4, Lesson5]
 const progressIncrement = 100 / (lessonComponents.length - 1)
 
 const Unit1 = () => {
