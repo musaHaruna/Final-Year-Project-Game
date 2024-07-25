@@ -105,6 +105,14 @@ const Lesson3 = () => {
       preserveAspectRatio: 'xMidYMid slice',
     },
   }
+  const defaultOptionsMission = {
+    loop: true,
+    autoplay: true,
+    animationData: tryAgainAnimation,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  }
 
   return (
     <div>
@@ -116,6 +124,7 @@ const Lesson3 = () => {
         programming
       </p>
       <Lesson
+        missionAnimation={defaultOptionsMission}
         elements={elements}
         instructions={instructions}
         handlePlay={handlePlayLesson3}

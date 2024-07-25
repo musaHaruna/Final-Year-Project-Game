@@ -4,7 +4,13 @@ import Output from './Output'
 import ControlButtons from './ControlButtons'
 import Toolbar from './Toolbar'
 
-const Lesson = ({ elements, handlePlay, handleNextStep, instructions }) => {
+const Lesson = ({
+  elements,
+  handlePlay,
+  handleNextStep,
+  instructions,
+  missionAnimation,
+}) => {
   const [workspace, setWorkspace] = useState([])
   const [output, setOutput] = useState(null)
   const [history, setHistory] = useState([])
@@ -58,7 +64,7 @@ const Lesson = ({ elements, handlePlay, handleNextStep, instructions }) => {
           handleDrop={handleDrop}
           handleChange={handleChange}
         />
-        <Output output={output} />
+        <Output missionAnimation={missionAnimation} output={output} />
       </div>
 
       <ControlButtons
