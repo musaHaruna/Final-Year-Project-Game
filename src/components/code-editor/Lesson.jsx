@@ -4,7 +4,7 @@ import Output from './Output'
 import ControlButtons from './ControlButtons'
 import Toolbar from './Toolbar'
 
-const Lesson = ({ elements, handlePlay, handleNextStep }) => {
+const Lesson = ({ elements, handlePlay, handleNextStep, instructions }) => {
   const [workspace, setWorkspace] = useState([])
   const [output, setOutput] = useState(null)
   const [history, setHistory] = useState([])
@@ -51,10 +51,7 @@ const Lesson = ({ elements, handlePlay, handleNextStep }) => {
   }
 
   return (
-    <div className='container mx-auto p-4'>
-      <h2 className='text-xl font-medium mb-4'>
-        Drag and drop elements to declare and initialize variables.
-      </h2>
+    <div className='mx-auto p-4'>
       <div className='flex space-x-8'>
         <Workspace
           workspace={workspace}
@@ -76,15 +73,9 @@ const Lesson = ({ elements, handlePlay, handleNextStep }) => {
       <div className='mt-8'>
         <h3 className='text-md font-medium mb-2'>Instructions:</h3>
         <ol className='list-decimal list-inside'>
-          {elements
-            .filter((element) => element.variable)
-            .map((element, index) => (
-              <li key={index}>
-                Drag and drop {element.variable.split(' ')[0]} and input a{' '}
-                {element.variable.split(' ')[0]}.
-              </li>
-            ))}
-          <li>Click PLAY to see the declared variables in the output.</li>
+          {instructions.map((instruction, index) => (
+            <li key={index}>{instruction}</li>
+          ))}
         </ol>
       </div>
 

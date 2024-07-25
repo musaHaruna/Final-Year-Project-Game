@@ -4,7 +4,7 @@ const Toolbar = ({ elements, handleDragStart }) => (
   <div className='flex gap-6 items-start'>
     <div>
       {elements.some((element) => element.variable) && (
-        <div className=''>
+        <div className='overflow-y-scroll h-36'>
           <h3 className='text-md font-medium mb-2'>Variables</h3>
           {elements
             .filter((element) => element.variable)
@@ -13,7 +13,7 @@ const Toolbar = ({ elements, handleDragStart }) => (
                 key={index}
                 draggable
                 onDragStart={(e) => handleDragStart(e, element.variable)}
-                className='p-2 bg-gray-200 border border-gray-300 rounded-md cursor-pointer mb-2'
+                className='rounded-md cursor-pointer mb-2 button-generic'
               >
                 {element.variable}
               </div>
@@ -23,7 +23,7 @@ const Toolbar = ({ elements, handleDragStart }) => (
     </div>
     <div>
       {elements.some((element) => element.output) && (
-        <div className=''>
+        <div className='overflow-y-scroll h-36'>
           <h3 className='text-md font-medium mb-2'>Outputs</h3>
           {elements
             .filter((element) => element.output)
@@ -32,7 +32,7 @@ const Toolbar = ({ elements, handleDragStart }) => (
                 key={index}
                 draggable
                 onDragStart={(e) => handleDragStart(e, element.output)}
-                className='p-2 bg-gray-200 border border-gray-300 rounded-md cursor-pointer mb-2'
+                className='button-generic rounded-md cursor-pointer mb-2'
               >
                 {element.output}
               </div>

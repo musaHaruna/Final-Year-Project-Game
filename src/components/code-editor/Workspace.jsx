@@ -2,16 +2,13 @@ import React from 'react'
 
 const Workspace = ({ workspace, handleDrop, handleChange }) => (
   <div
-    className='w-1/2 p-4 border border-gray-300 rounded-md'
+    className='w-1/2 p-4 border border-gray-300 rounded-md overflow-y-scroll h-52'
     onDrop={handleDrop}
     onDragOver={(e) => e.preventDefault()}
   >
-    <h2 className='text-lg font-medium mb-2'>Workspace</h2>
+    <h2 className='text-md font-medium'>Workspace</h2>
     {workspace.map((item, index) => (
-      <div
-        key={index}
-        className='p-2 bg-gray-100 border border-gray-300 rounded-md mb-2 flex items-center gap-5'
-      >
+      <div key={index} className='p-2 mb-2 flex items-center gap-1'>
         <div className='flex items-center'>
           <span className='mr-2'>{item.type}</span>
         </div>
