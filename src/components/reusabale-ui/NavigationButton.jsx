@@ -9,7 +9,7 @@ const NavigationButton = ({
 }) => {
   return (
     <button
-      className={`flex items-center justify-center py-2 pr-11 pl-11 rounded-xl ${bgColor} ${textColor} shadow-lg ${shadowColor} font-semibold`}
+      className={`flex button-generic items-center justify-center py-2 pr-11 pl-11 rounded-xl bg-white text-gray-300 font-semibold w-32`}
       onClick={onClick}
     >
       {icon && <Icon width={26} icon={icon} className='mr-2' />}

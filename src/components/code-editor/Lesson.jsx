@@ -4,10 +4,12 @@ import Output from './Output'
 import ControlButtons from './ControlButtons'
 import Toolbar from './Toolbar'
 
-const Lesson = ({ elements, handlePlay }) => {
+const Lesson = ({ elements, handlePlay, handleNextStep }) => {
   const [workspace, setWorkspace] = useState([])
   const [output, setOutput] = useState(null)
   const [history, setHistory] = useState([])
+  const [stepIndex, setStepIndex] = useState(0)
+  const [stepFeedback, setStepFeedback] = useState('')
 
   const handleDrop = (e) => {
     e.preventDefault()
@@ -25,6 +27,8 @@ const Lesson = ({ elements, handlePlay }) => {
     setHistory([...history, workspace])
     setWorkspace([])
     setOutput(null)
+    setStepIndex(0)
+    setStepFeedback('')
   }
 
   const handleUndo = () => {
@@ -64,6 +68,9 @@ const Lesson = ({ elements, handlePlay }) => {
         handleReset={handleReset}
         handleUndo={handleUndo}
         handlePlay={() => handlePlay(workspace, setOutput)}
+        handleCheckStep={() =>
+          handleNextStep(workspace, stepIndex, setStepIndex, setStepFeedback)
+        }
       />
 
       <div className='mt-8'>
@@ -84,6 +91,12 @@ const Lesson = ({ elements, handlePlay }) => {
       <div className='mt-8'>
         <Toolbar elements={elements} handleDragStart={handleDragStart} />
       </div>
+
+      {stepFeedback && (
+        <div className='mt-4 p-2 bg-green-200 text-green-800 rounded'>
+          {stepFeedback}
+        </div>
+      )}
     </div>
   )
 }

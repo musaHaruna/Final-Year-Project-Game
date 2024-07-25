@@ -95,61 +95,31 @@ const Lesson1 = () => {
   }, [showAnimation])
 
   return (
-    <div className='p-8'>
-      <motion.h1
-        className='text-4xl font-bold mb-6 text-center'
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        Variables
-      </motion.h1>
-      <motion.p
-        className='text-lg mb-4'
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-      >
+    <div>
+      <h1 className='text-3xl font-bold mb-6 text-center'>Variables</h1>
+      <p className='text-lg mb-4'>
         <span className='font-semibold'>Definition:</span> Explain that
         variables are like containers that hold data.
-      </motion.p>
-      <motion.p
-        className='text-lg mb-8'
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 0.5 }}
-      >
+      </p>
+      <p className='text-lg mb-4'>
         <span className='font-semibold'>Purpose:</span> Highlight how variables
         are used to store information that can be referenced and manipulated in
         a program.
-      </motion.p>
+      </p>
       <div className='mb-8'>
-        <motion.h2
-          className='text-2xl font-bold mb-4'
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.5 }}
-        >
+        <h2 className='text-1xl font-bold mb-2'>
           <span className='underline'>Mission:</span> Drag and drop the Icons
           into their appropriate container to store them
-        </motion.h2>
+        </h2>
       </div>
-      <motion.div
-        className='flex justify-around mb-8'
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 0.5 }}
-      >
+      <div className='flex justify-around mb-8'>
         {['mango', 'ball', 'apple'].map((category) => (
-          <motion.div
+          <div
             key={category}
             onDragOver={onDragOver}
             onDrop={(event) => onDrop(event, category)}
             className='w-32 h-32 border-4 border-dashed flex flex-col items-center justify-center rounded-lg shadow-md'
             style={{ cursor: 'default' }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
           >
             <h2 className='text-xl font-semibold mb-2 capitalize'>
               {category}
@@ -159,57 +129,43 @@ const Lesson1 = () => {
                 {item === 'mango' ? '🥭' : item === 'ball' ? '⚽' : '🍎'}
               </h1>
             ))}
-          </motion.div>
+          </div>
         ))}
-      </motion.div>
-      <motion.div
-        className='flex justify-around mb-4'
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 0.5 }}
-      >
+      </div>
+      <div className='flex justify-around mb-4'>
         {items.apple && (
-          <motion.h1
+          <h1
             className='text-4xl cursor-grab'
             draggable='true'
             onDragStart={(event) => onDragStart(event, 'apple')}
             onDragEnd={onDragEnd}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
           >
             🍎
-          </motion.h1>
+          </h1>
         )}
         {items.mango && (
-          <motion.h1
+          <h1
             className='text-4xl cursor-grab'
             draggable='true'
             onDragStart={(event) => onDragStart(event, 'mango')}
             onDragEnd={onDragEnd}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
           >
             🥭
-          </motion.h1>
+          </h1>
         )}
         {items.ball && (
-          <motion.h1
+          <h1
             className='text-4xl cursor-grab'
             draggable='true'
             onDragStart={(event) => onDragStart(event, 'ball')}
             onDragEnd={onDragEnd}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
           >
             ⚽
-          </motion.h1>
+          </h1>
         )}
-      </motion.div>
+      </div>
       {showAnimation && (
-        <div className='fixed inset-0 flex items-center justify-center bg-opacity-0'>
+        <div className='fixed inset-0 flex items-center justify-center bg-slate-800 bg-opacity-45'>
           <Lottie
             options={{
               loop: false,

@@ -12,7 +12,7 @@ const Button = ({
 }) => {
   return (
     <button
-      className={`flex items-center justify-center p-3 rounded-2xl border-b-4 border-2 border-${shadowColor} ${bgColor}`}
+      className={`flex button-generic items-center justify-center p-3 rounded-2xl border-b-4 border-2 border-${shadowColor} ${bgColor}`}
       onClick={onClick}
     >
       {icon && <Icon width={26} icon={icon} className='mr-2' />}

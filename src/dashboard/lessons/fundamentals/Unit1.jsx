@@ -61,15 +61,17 @@ const Unit1 = () => {
   const CurrentLessonComponent = lessonComponents[currentLessonIndex]
 
   return (
-    <div className='m-auto mt-8'>
-      <div style={{ height: '20%' }} className='w-11/12 m-auto mt-8'>
+    <div className='m-auto' style={{ overflowY: 'hidden' }}>
+      <div className='w-11/12 m-auto mt-4 '>
         <ProgressBar progress={localProgress} />
-        <CurrentLessonComponent
-          onCompletionStatusChange={handleCompletionStatusChange}
-        />
+        <div style={{ height: '440px', overflowY:"scroll" }}>
+          <CurrentLessonComponent
+            onCompletionStatusChange={handleCompletionStatusChange}
+          />
+        </div>
       </div>
       <hr />
-      <div className='w-11/12 m-auto mt-8'>
+      <div className='w-11/12 m-auto mt-2 '>
         <div className='flex justify-between'>
           <NavigationButton
             text='PREVIOUS'

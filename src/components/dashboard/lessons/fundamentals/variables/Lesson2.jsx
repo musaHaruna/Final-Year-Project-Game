@@ -99,69 +99,36 @@ const Lesson2 = () => {
   }, [showAnimation])
 
   return (
-    <div className='p-8'>
-      <motion.h1
-        className='text-4xl font-bold mb-6 text-center'
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
+    <div className=''>
+      <h1 className='text-3xl font-bold mb-4 text-center'>
         Types of variables
-      </motion.h1>
-      <motion.p
-        className='text-lg mb-4'
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-      >
+      </h1>
+      <p className='text-lg mb-4'>
         <span className='font-semibold'>Strings:</span> Text enclosed in quotes
         (e.g., "Hello, World!")
-      </motion.p>
-      <motion.p
-        className='text-lg mb-4'
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-      >
+      </p>
+      <p className='text-lg mb-4'>
         <span className='font-semibold'>Numbers:</span> Integers and
         floating-point numbers (e.g., 42, 3.14)
-      </motion.p>
-      <motion.p
-        className='text-lg mb-8'
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-      >
+      </p>
+      <p className='text-lg mb-6'>
         <span className='font-semibold'>Booleans:</span> True or False values
-      </motion.p>
+      </p>
 
-      <div className='mb-8'>
-        <motion.h2
-          className='text-2xl font-bold mb-4'
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-        >
+      <div className='mb-2'>
+        <h2 className='text-lg font-bold mb-4'>
           <span className='underline'>Mission:</span> Drag and drop the values
           into their appropriate container to store them
-        </motion.h2>
+        </h2>
       </div>
-      <motion.div
-        className='flex justify-around mb-8'
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.7, duration: 0.5 }}
-      >
+      <div className='flex justify-around mb-6'>
         {['strings', 'numbers', 'booleans'].map((category) => (
-          <motion.div
+          <div
             key={category}
             onDragOver={onDragOver}
             onDrop={(event) => onDrop(event, category)}
             className='min-w-32 min-h-32 p-4 border-4 border-dashed flex flex-col items-center justify-center rounded-lg shadow-md'
             style={{ cursor: 'default' }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
           >
             <h2 className='text-xl font-semibold mb-2 capitalize'>
               {category}
@@ -171,60 +138,46 @@ const Lesson2 = () => {
                 {item}
               </h1>
             ))}
-          </motion.div>
+          </div>
         ))}
-      </motion.div>
-      <motion.div
-        className='flex justify-around mb-4'
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.7, duration: 0.5 }}
-      >
+      </div>
+      <div className='flex justify-around mb-4'>
         {items.strings.map((item, index) => (
-          <motion.h1
+          <h1
             key={index}
-            className='text-lg p-2 border m-1 cursor-grab'
+            className='text-lg p-2 border m-1 cursor-grab button-generic'
             draggable='true'
             onDragStart={(event) => onDragStart(event, item, 'strings')}
             onDragEnd={onDragEnd}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
           >
             {item}
-          </motion.h1>
+          </h1>
         ))}
         {items.numbers.map((item, index) => (
-          <motion.h1
+          <h1
             key={index}
-            className='text-lg p-2 border m-1 cursor-grab'
+            className='text-lg p-2 border m-1 cursor-grab button-generic'
             draggable='true'
             onDragStart={(event) => onDragStart(event, item, 'numbers')}
             onDragEnd={onDragEnd}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
           >
             {item}
-          </motion.h1>
+          </h1>
         ))}
         {items.booleans.map((item, index) => (
-          <motion.h1
+          <h1
             key={index}
-            className='text-lg p-2 border m-1 cursor-grab'
+            className='text-lg p-2 border m-1 cursor-grab button-generic'
             draggable='true'
             onDragStart={(event) => onDragStart(event, item, 'booleans')}
             onDragEnd={onDragEnd}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
           >
             {item}
-          </motion.h1>
+          </h1>
         ))}
-      </motion.div>
+      </div>
       {showAnimation && (
-        <div className='fixed inset-0 flex items-center justify-center bg-opacity-0'>
+        <div className='fixed inset-0 flex items-center justify-center bg-slate-700 bg-opacity-25'>
           <Lottie
             options={{
               loop: false,
@@ -237,12 +190,7 @@ const Lesson2 = () => {
         </div>
       )}
       {showHint && (
-        <motion.div
-          className='fixed bottom-4 right-4 p-4 bg-white border-2 border-red-500 rounded-lg shadow-lg flex items-center space-x-4'
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+        <div className='fixed bottom-4 right-4 p-4 bg-white border-2 border-red-500 rounded-lg shadow-lg flex items-center space-x-4'>
           <p className='text-red-500'>
             Hint: Make sure you drop the item in the correct container.
           </p>
@@ -252,17 +200,7 @@ const Lesson2 = () => {
           >
             Got it!
           </button>
-        </motion.div>
-      )}
-      {message && (
-        <motion.div
-          className='fixed top-4 left-1/2 transform -translate-x-1/2 p-4 bg-white border-2 border-green-500 rounded-lg shadow-lg'
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          {message}
-        </motion.div>
+        </div>
       )}
     </div>
   )

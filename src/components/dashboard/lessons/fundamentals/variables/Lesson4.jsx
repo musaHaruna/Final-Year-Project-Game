@@ -67,8 +67,31 @@ const handlePlayLesson4 = (workspace, setOutput) => {
   }
 }
 
+const handleNextStepLesson4 = (
+  workspace,
+  stepIndex,
+  setStepIndex,
+  setStepFeedback
+) => {
+  const steps = ['string A =', 'string B =', 'display A', 'display B']
+
+  if (
+    stepIndex < steps.length &&
+    workspace[stepIndex]?.type === steps[stepIndex]
+  ) {
+    alert(`Good job! You completed step ${stepIndex + 1}`)
+    setStepIndex(stepIndex + 1)
+  } else {
+    setStepFeedback('')
+  }
+}
+
 const Lesson4 = () => (
-  <Lesson elements={elements} handlePlay={handlePlayLesson4} />
+  <Lesson
+    elements={elements}
+    handlePlay={handlePlayLesson4}
+    handleNextStep={handleNextStepLesson4}
+  />
 )
 
 export default Lesson4
