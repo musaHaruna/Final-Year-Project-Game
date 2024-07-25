@@ -4,7 +4,7 @@ const Toolbar = ({ elements, handleDragStart }) => (
   <div className='flex gap-6 items-start'>
     <div>
       {elements.some((element) => element.variable) && (
-        <div className='overflow-y-scroll h-36'>
+        <div className=''>
           <h3 className='text-md font-medium mb-2'>Variables</h3>
           {elements
             .filter((element) => element.variable)
@@ -23,7 +23,7 @@ const Toolbar = ({ elements, handleDragStart }) => (
     </div>
     <div>
       {elements.some((element) => element.output) && (
-        <div className='overflow-y-scroll h-36'>
+        <div className=''>
           <h3 className='text-md font-medium mb-2'>Outputs</h3>
           {elements
             .filter((element) => element.output)
