@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Lesson from '../../../../code-editor/Lesson'
 import Lottie from 'react-lottie'
 import successAnimation1 from '../../../../../assets/animations/encouragements/excellent.json'
 import successAnimation2 from '../../../../../assets/animations/encouragements/good-job.json'
 import successAnimation3 from '../../../../../assets/animations/encouragements/nice.json'
 import tryAgainAnimation from '../../../../../assets/animations/encouragements/try-again.json'
+import character from '../../../../../assets/animations/fundamentals/character.lottie'
 
 const elements = [
   { variable: 'string firstName =' },
@@ -22,114 +23,123 @@ const elements = [
   { output: 'output age' }, // Incorrect output command
   { output: 'output lastName' }, // Incorrect output command
 ]
-
-const handlePlayLesson5 = (workspace, setOutput) => {
-  let variables = {}
-  let errors = []
-  let displayFirstName = false
-  let displayAge = false
-  let displayLastName = false
-
-  const requiredVariables = [
-    { type: 'string firstName =', found: false, value: '' },
-    { type: 'number age =', found: false, value: '' },
-    { type: 'string lastName =', found: false, value: '' },
-  ]
-
-  workspace.forEach((item) => {
-    const match = requiredVariables.find((v) => v.type === item.type)
-    if (match) {
-      match.found = true
-      match.value = item.value.trim()
-
-      if (item.value.trim() === '') {
-        errors.push(`Please input a value for ${item.type}`)
-      } else if (
-        match.type.startsWith('number') &&
-        isNaN(item.value.trim())
-      ) {
-        errors.push(
-          `Variable ${item.type} expects a number, but got: ${item.value.trim()}`
-        )
-      } else if (
-        match.type.startsWith('string') &&
-        (!item.value.trim().startsWith('"') || !item.value.trim().endsWith('"'))
-      ) {
-        errors.push(
-          `Variable ${item.type} expects a string wrapped in quotes, but got: ${item.value.trim()}`
-        )
-      } else {
-        variables[item.type.split('=')[0].trim()] = {
-          type: match.type.startsWith('number') ? 'number' : 'string',
-          value: match.type.startsWith('number')
-            ? parseFloat(item.value.trim())
-            : item.value.trim().slice(1, -1), // remove quotes
-        }
-      }
-    } else if (item.type === 'display firstName') {
-      displayFirstName = true
-    } else if (item.type === 'display age') {
-      displayAge = true
-    } else if (item.type === 'display lastName') {
-      displayLastName = true
-    } else {
-      errors.push(`Unexpected variable type or output command: ${item.type}`)
-    }
-  })
-
-  requiredVariables.forEach((variable) => {
-    if (!variable.found) {
-      errors.push(`Missing required variable: ${variable.type}`)
-    }
-  })
-
-  if (errors.length > 0) {
-    setOutput(`Errors: ${errors.join('; ')}`)
-  } else if (displayFirstName && displayAge && displayLastName) {
-    const result = Object.entries(variables)
-      .map(([key, { type, value }]) => `${key} = ${value} (${type})`)
-      .join(', ')
-    setOutput(
-      `Congratulations! You have successfully stored the variables: ${result}`
-    )
-  } else {
-    setOutput(`Please use "display firstName", "display age" and "display lastName" to display the variables`)
-  }
-}
-
-const handleNextStepLesson5 = (
-  workspace,
-  stepIndex,
-  setStepIndex,
-  setAnimationData
-) => {
-  const steps = [
-    'string firstName =',
-    'number age =',
-    'string lastName =',
-    'display firstName',
-    'display age',
-    'display lastName',
-  ]
-
-  if (
-    stepIndex < steps.length &&
-    workspace[stepIndex]?.type === steps[stepIndex]
-  ) {
-    const successAnimations = [
-      successAnimation1,
-      successAnimation2,
-      successAnimation3,
-    ]
-    const randomIndex = Math.floor(Math.random() * successAnimations.length)
-    setAnimationData(successAnimations[randomIndex])
-    setStepIndex(stepIndex + 1)
-  } else {
-    setAnimationData(tryAgainAnimation)
-  }
-}
-
+const successMessage =
+  'Congratulations! You have successfully stored the variables:'
 const Lesson5 = () => {
+  const [startAnimation, setStartAnimation] = useState('')
+  const dotLottieRef = useRef(null)
+  const handlePlayLesson5 = (workspace, setOutput) => {
+    let variables = {}
+    let errors = []
+    let displayFirstName = false
+    let displayAge = false
+    let displayLastName = false
+
+    const requiredVariables = [
+      { type: 'string firstName =', found: false, value: '' },
+      { type: 'number age =', found: false, value: '' },
+      { type: 'string lastName =', found: false, value: '' },
+    ]
+
+    workspace.forEach((item) => {
+      const match = requiredVariables.find((v) => v.type === item.type)
+      if (match) {
+        match.found = true
+        match.value = item.value.trim()
+
+        if (item.value.trim() === '') {
+          errors.push(`Please input a value for ${item.type}`)
+        } else if (
+          match.type.startsWith('number') &&
+          isNaN(item.value.trim())
+        ) {
+          errors.push(
+            `Variable ${
+              item.type
+            } expects a number, but got: ${item.value.trim()}`
+          )
+        } else if (
+          match.type.startsWith('string') &&
+          (!item.value.trim().startsWith('"') ||
+            !item.value.trim().endsWith('"'))
+        ) {
+          errors.push(
+            `Variable ${
+              item.type
+            } expects a string wrapped in quotes, but got: ${item.value.trim()}`
+          )
+        } else {
+          variables[item.type.split('=')[0].trim()] = {
+            type: match.type.startsWith('number') ? 'number' : 'string',
+            value: match.type.startsWith('number')
+              ? parseFloat(item.value.trim())
+              : item.value.trim().slice(1, -1), // remove quotes
+          }
+        }
+      } else if (item.type === 'display firstName') {
+        displayFirstName = true
+      } else if (item.type === 'display age') {
+        displayAge = true
+      } else if (item.type === 'display lastName') {
+        displayLastName = true
+      } else {
+        errors.push(`Unexpected variable type or output command: ${item.type}`)
+      }
+    })
+
+    requiredVariables.forEach((variable) => {
+      if (!variable.found) {
+        errors.push(`Missing required variable: ${variable.type}`)
+      }
+    })
+
+    if (errors.length > 0) {
+      setOutput(`Errors: ${errors.join('; ')}`)
+    } else if (displayFirstName && displayAge && displayLastName) {
+      const result = Object.entries(variables)
+        .map(([key, { type, value }]) => `${key} = ${value} (${type})`)
+        .join(', ')
+      setOutput(`${successMessage}  ${result} `)
+      setStartAnimation(successMessage)
+    } else {
+      setOutput(
+        `Please use "display firstName", "display age" and "display lastName" to display the variables`
+      )
+    }
+  }
+
+  const handleNextStepLesson5 = (
+    workspace,
+    stepIndex,
+    setStepIndex,
+    setAnimationData
+  ) => {
+    const steps = [
+      'string firstName =',
+      'number age =',
+      'string lastName =',
+      'display firstName',
+      'display age',
+      'display lastName',
+    ]
+
+    if (
+      stepIndex < steps.length &&
+      workspace[stepIndex]?.type === steps[stepIndex]
+    ) {
+      const successAnimations = [
+        successAnimation1,
+        successAnimation2,
+        successAnimation3,
+      ]
+      const randomIndex = Math.floor(Math.random() * successAnimations.length)
+      setAnimationData(successAnimations[randomIndex])
+      setStepIndex(stepIndex + 1)
+    } else {
+      setAnimationData(tryAgainAnimation)
+    }
+  }
+
   const [stepIndex, setStepIndex] = useState(0)
   const [animationData, setAnimationData] = useState(null)
 
@@ -142,6 +152,16 @@ const Lesson5 = () => {
       return () => clearTimeout(timer)
     }
   }, [animationData])
+
+  useEffect(() => {
+    if (dotLottieRef.current) {
+      if (startAnimation === successMessage) {
+        dotLottieRef.current.play()
+      } else {
+        dotLottieRef.current.stop()
+      }
+    }
+  }, [startAnimation, dotLottieRef, successMessage])
 
   const defaultOptions = {
     loop: true,
@@ -171,6 +191,8 @@ const Lesson5 = () => {
           'Drag and drop "display lastName" to display the value of lastName.',
         ]}
         handlePlay={handlePlayLesson5}
+        dotLottieRef={dotLottieRef}
+        outputAnimation={character}
         handleNextStep={(workspace) =>
           handleNextStepLesson5(
             workspace,
