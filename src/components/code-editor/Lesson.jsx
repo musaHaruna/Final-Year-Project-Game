@@ -5,7 +5,14 @@ import Output from './Output'
 import ControlButtons from './ControlButtons'
 import Toolbar from './Toolbar'
 
-const Lesson = ({ elements, handlePlay, handleNextStep, instructions }) => {
+const Lesson = ({
+  elements,
+  handlePlay,
+  handleNextStep,
+  instructions,
+  outputAnimation,
+  dotLottieRef,
+}) => {
   const [workspace, setWorkspace] = useState([])
   const [output, setOutput] = useState(null)
   const [history, setHistory] = useState([])
@@ -65,7 +72,11 @@ const Lesson = ({ elements, handlePlay, handleNextStep, instructions }) => {
           handleDrop={handleDrop}
           handleChange={handleChange}
         />
-        <Output output={output} />
+        <Output
+          output={output}
+          outputAnimation={outputAnimation}
+          dotLottieRef={dotLottieRef}
+        />
       </div>
 
       <ControlButtons
@@ -79,17 +90,18 @@ const Lesson = ({ elements, handlePlay, handleNextStep, instructions }) => {
 
       {isToolbarVisible && (
         <div
-          className='mt-8 bg-slate-300 p-7'
+          className='mt-8 bg-slate-300 p-7 mx-auto'
           style={{
             position: 'absolute',
             top: '23rem',
-            height:"150px",
-            borderRadius:"10px",
+            left: '12rem',
+            height: '150px',
+            borderRadius: '10px',
             backgroundColor: '',
             zIndex: '9',
             overflowX: 'hidden',
             overflowY: 'scroll',
-            width: '90%',
+            width: '70%',
           }}
           initial={{ y: 100 }}
           animate={{ y: isToolbarVisible ? 0 : 100 }}
@@ -100,7 +112,7 @@ const Lesson = ({ elements, handlePlay, handleNextStep, instructions }) => {
       )}
 
       <button
-        className='fixed z-50 bottom-10 right-10 p-2 bg-gray-200 rounded-full hover:bg-gray-300'
+        className='fixed z-50 bottom-4 right-2/4 p-2 bg-gray-200 rounded-full hover:bg-gray-300'
         onClick={() => setIsToolbarVisible(!isToolbarVisible)}
       >
         {isToolbarVisible ? (

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
-import Lesson from '../../../../code-editor/Lesson'
+import Lesson from '../code-editor/Lesson'
 import Lottie from 'react-lottie'
-import successAnimation1 from '../../../../../assets/animations/encouragements/excellent.json'
-import successAnimation2 from '../../../../../assets/animations/encouragements/good-job.json'
-import successAnimation3 from '../../../../../assets/animations/encouragements/nice.json'
-import tryAgainAnimation from '../../../../../assets/animations/encouragements/try-again.json'
-import character from '../../../../../assets/animations/fundamentals/character.lottie'
+import successAnimation1 from '../../assets/animations/encouragements/excellent.json'
+import successAnimation2 from '../../assets/animations/encouragements/good-job.json'
+import successAnimation3 from '../../assets/animations/encouragements/nice.json'
+import tryAgainAnimation from '../../assets/animations/encouragements/try-again.json'
+import character from '../../assets/animations/fundamentals/character.lottie'
 
 const elements = [{ variable: 'number A =' }, { variable: 'number B =' }]
 const instructions = [
@@ -14,16 +14,16 @@ const instructions = [
   'Click PLAY to see the declared variables in the output.',
 ]
 
-const successMessage =
-  'Congratulations! You have successfully stored the variables.'
-
 const Lesson3 = () => {
   const [stepIndex, setStepIndex] = useState(0)
   const [animationData, setAnimationData] = useState(null)
-  const [startAnimation, setStartAnimation] = useState('')
+  const [output, setOutput] = useState(null)
   const dotLottieRef = useRef(null)
 
-  const handlePlayLesson3 = (workspace, setOutput) => {
+  const successMessage =
+    'Congratulations! You have successfully stored the variables.'
+
+  const handlePlayLesson3 = (workspace) => {
     let variables = {}
     let errors = []
 
@@ -67,26 +67,20 @@ const Lesson3 = () => {
       setOutput(`Errors: ${errors.join('; ')}`)
     } else {
       setOutput(successMessage)
-      setStartAnimation(successMessage)
     }
   }
 
   useEffect(() => {
     if (dotLottieRef.current) {
-      if (startAnimation === successMessage) {
+      if (output === successMessage) {
         dotLottieRef.current.play()
       } else {
         dotLottieRef.current.stop()
       }
     }
-  }, [startAnimation, dotLottieRef, successMessage])
+  }, [output, dotLottieRef, successMessage])
 
-  const handleNextStepLesson3 = (
-    workspace,
-    stepIndex,
-    setStepIndex,
-    setAnimationData
-  ) => {
+  const handleNextStepLesson3 = (workspace) => {
     const steps = ['number A =', 'number B =']
 
     if (
@@ -114,15 +108,6 @@ const Lesson3 = () => {
     }
   }, [animationData])
 
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice',
-    },
-  }
-
   return (
     <div>
       <h2 className='text-xl text-center font-medium mb-1'>
@@ -135,6 +120,11 @@ const Lesson3 = () => {
       <Lesson
         elements={elements}
         dotLottieRef={dotLottieRef}
+        outputAnimationFunction={() => {
+          if (dotLottieRef.current) {
+            dotLottieRef.current.play()
+          }
+        }}
         outputAnimation={character}
         instructions={instructions}
         handlePlay={handlePlayLesson3}
@@ -147,9 +137,21 @@ const Lesson3 = () => {
           )
         }
       />
+
       {animationData && (
         <div className='fixed inset-0 flex items-center justify-center bg-slate-700 bg-opacity-25'>
-          <Lottie options={defaultOptions} height={400} width={400} />
+          <Lottie
+            options={{
+              loop: true,
+              autoplay: true,
+              animationData,
+              rendererSettings: {
+                preserveAspectRatio: 'xMidYMid slice',
+              },
+            }}
+            height={400}
+            width={400}
+          />
         </div>
       )}
     </div>
