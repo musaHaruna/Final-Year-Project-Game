@@ -89,7 +89,7 @@ const Lesson = ({
       />
 
       {isToolbarVisible && (
-        <div
+        <motion.div
           className='mt-8 bg-slate-300 p-7 mx-auto'
           style={{
             position: 'absolute',
@@ -97,7 +97,6 @@ const Lesson = ({
             left: '12rem',
             height: '150px',
             borderRadius: '10px',
-            backgroundColor: '',
             zIndex: '9',
             overflowX: 'hidden',
             overflowY: 'scroll',
@@ -108,7 +107,7 @@ const Lesson = ({
           transition={{ type: 'spring', stiffness: 300 }}
         >
           <Toolbar elements={elements} handleDragStart={handleDragStart} />
-        </div>
+        </motion.div>
       )}
 
       <button

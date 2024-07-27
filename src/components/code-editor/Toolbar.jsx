@@ -40,6 +40,25 @@ const Toolbar = ({ elements, handleDragStart }) => (
         </div>
       )}
     </div>
+    <div>
+      {elements.some((element) => element.operation) && (
+        <div className=''>
+          <h3 className='text-md font-medium mb-2'>Operation</h3>
+          {elements
+            .filter((element) => element.operation)
+            .map((element, index) => (
+              <div
+                key={index}
+                draggable
+                onDragStart={(e) => handleDragStart(e, element.operation)}
+                className='button-generic rounded-md cursor-pointer mb-2'
+              >
+                {element.operation}
+              </div>
+            ))}
+        </div>
+      )}
+    </div>
   </div>
 )
 
