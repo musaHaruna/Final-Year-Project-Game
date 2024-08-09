@@ -12,7 +12,7 @@ const Workspace = ({ workspace, handleDrop, handleChange }) => (
         <div className='flex items-center'>
           <span className='mr-2'>{item.type}</span>
         </div>
-        {item.type.includes('=') && !item.type.includes('[A] + [B]') && (
+        {item.type.includes('=') && (
           <input
             type='text'
             value={item.value}
@@ -21,7 +21,13 @@ const Workspace = ({ workspace, handleDrop, handleChange }) => (
             placeholder={`${item.type.split(' ')[0]}`}
           />
         )}
+        {item.type === '[a] + [b]' && (
+          <span className='ml-2'>{item.value}</span>
+        )}
         {item.type === 'number C = [A] + [B]' && (
+          <span className='ml-2'>{item.value}</span>
+        )}
+        {item.type === 'int area = length * width' && (
           <span className='ml-2'>{item.value}</span>
         )}
       </div>
