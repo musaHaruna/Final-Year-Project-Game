@@ -1,121 +1,130 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Lesson from '../../../../code-editor/Lesson';
-import Lottie from 'react-lottie';
-import successAnimation1 from '../../../../../assets/animations/encouragements/excellent.json';
-import successAnimation2 from '../../../../../assets/animations/encouragements/good-job.json';
-import successAnimation3 from '../../../../../assets/animations/encouragements/nice.json';
-import character from '../../../../../assets/animations/fundamentals/character.lottie';
+import React, { useState, useEffect, useRef } from 'react'
+import Lesson from '../../../../code-editor/Lesson'
+import Lottie from 'react-lottie'
+import successAnimation1 from '../../../../../assets/animations/encouragements/excellent.json'
+import successAnimation2 from '../../../../../assets/animations/encouragements/good-job.json'
+import successAnimation3 from '../../../../../assets/animations/encouragements/nice.json'
+import character from '../../../../../assets/animations/fundamentals/character.lottie'
 
+// Define elements for rectangle area calculation with updated format
 const elements = [
-  { variable: 'number A =' },
-  { variable: 'number B =' },
-  { variable: 'number D =' },
-  { operation: 'number C = [A] + [B] + [D]' },
-  { output: 'number C' },
-];
+  { variable: 'number length =' },
+  { variable: 'number width =' },
+  { operation: 'number area = [length] * [width]' },
+  { output: 'number area' },
+]
 
 const instructions = [
-  "Drag and drop 'number A =' and input a value.",
-  "Drag and drop 'number B =' and input a value.",
-  "Drag and drop 'number D =' and input a value.",
-  "Drag and drop 'number C = [A] + [B] + [D]' to perform the addition.",
-  "Drag and drop 'number C' to display the result.",
-];
+  "Drag and drop 'number length =' and input a value for the length.",
+  "Drag and drop 'number width =' and input a value for the width.",
+  "Drag and drop 'number area = [length] * [width]' to calculate the area.",
+  "Drag and drop 'number area' to display the result.",
+]
 
-const successMessage = 'Congratulations! You have successfully stored the variables and performed the addition:';
+const successMessage =
+  'Congratulations! You have successfully calculated the area of the rectangle:'
 
-const Lesson4 = () => {
-  const [stepIndex, setStepIndex] = useState(0);
-  const [animationData, setAnimationData] = useState(null);
-  const [startAnimation, setStartAnimation] = useState('');
-  const dotLottieRef = useRef(null);
+const Lesson5 = () => {
+  const [stepIndex, setStepIndex] = useState(0)
+  const [animationData, setAnimationData] = useState(null)
+  const [startAnimation, setStartAnimation] = useState('')
+  const dotLottieRef = useRef(null)
 
   const handlePlayLesson4 = (workspace, setOutput) => {
-    let variables = {};
-    let errors = [];
-    let displayC = false;
+    let variables = {}
+    let errors = []
+    let displayArea = false
 
     workspace.forEach((item) => {
-      if (item.type === 'number A =' || item.type === 'number B =' || item.type === 'number D =') {
+      if (item.type === 'number length =' || item.type === 'number width =') {
         if (item.value.trim() === '') {
-          errors.push(`Please input a value for ${item.type}`);
+          errors.push(`Please input a value for ${item.type}`)
         } else if (isNaN(Number(item.value.trim()))) {
-          errors.push(`Value for ${item.type} should be a number`);
+          errors.push(`Value for ${item.type} should be a number`)
         } else {
           variables[item.type.split('=')[0].trim()] = {
             type: 'number',
             value: Number(item.value.trim()),
-          };
+          }
         }
-      } else if (item.type === 'number C = [A] + [B] + [D]') {
-        if (!variables['number A'] || !variables['number B'] || !variables['number D']) {
-          errors.push(`Define all 'number A =', 'number B =', and 'number D =' before using 'number C ='`);
+      } else if (item.type === 'number area = [length] * [width]') {
+        if (!variables['number length'] || !variables['number width']) {
+          errors.push(
+            `Define both 'number length =' and 'number width =' before using 'number area ='`
+          )
         } else {
-          variables['number C'] = {
+          variables['number area'] = {
             type: 'number',
-            value: variables['number A'].value + variables['number B'].value + variables['number D'].value,
-          };
+            value:
+              variables['number length'].value *
+              variables['number width'].value,
+          }
         }
-      } else if (item.type === 'number C') {
-        displayC = true;
+      } else if (item.type === 'number area') {
+        displayArea = true
       } else {
-        errors.push(`Unexpected variable type: ${item.type}`);
+        errors.push(`Unexpected variable type: ${item.type}`)
       }
-    });
+    })
 
     if (errors.length > 0) {
-      setOutput(`Errors: ${errors.join('; ')}`);
-    } else if (displayC) {
-      const result = Object.entries(variables)
-        .map(([key, { value }]) => `${key} = ${value}`)
-        .join(', ');
-      setOutput(`${successMessage} ${result}`);
-      setStartAnimation(successMessage);
+      setOutput(`Errors: ${errors.join('; ')}`)
+    } else if (displayArea) {
+      const result = `number area = ${variables['number area'].value}`
+      setOutput(`${successMessage} ${result}`)
+      setStartAnimation(successMessage)
     } else {
-      setOutput(`Please include 'number C' to display the result`);
+      setOutput(`Please include 'number area' to display the result`)
     }
-  };
+  }
 
   useEffect(() => {
     if (dotLottieRef.current) {
       if (startAnimation === successMessage) {
-        dotLottieRef.current.play();
+        dotLottieRef.current.play()
       } else {
-        dotLottieRef.current.stop();
+        dotLottieRef.current.stop()
       }
     }
-  }, [startAnimation]);
+  }, [startAnimation])
 
-  const handleNextStepLesson4 = (workspace, stepIndex, setStepIndex, setAnimationData) => {
+  const handleNextStepLesson4 = (
+    workspace,
+    stepIndex,
+    setStepIndex,
+    setAnimationData
+  ) => {
     const steps = [
-      'number A =',
-      'number B =',
-      'number D =',
-      'number C = [A] + [B] + [D]',
-      'number C',
-    ];
+      'number length =',
+      'number width =',
+      'number area = [length] * [width]',
+      'number area',
+    ]
 
-    if (stepIndex < steps.length && workspace[stepIndex]?.type === steps[stepIndex]) {
+    if (
+      stepIndex < steps.length &&
+      workspace[stepIndex]?.type === steps[stepIndex]
+    ) {
       const successAnimations = [
         successAnimation1,
         successAnimation2,
         successAnimation3,
-      ];
-      const randomIndex = Math.floor(Math.random() * successAnimations.length);
-      setAnimationData(successAnimations[randomIndex]);
-      setStepIndex(stepIndex + 1);
+      ]
+      const randomIndex = Math.floor(Math.random() * successAnimations.length)
+      setAnimationData(successAnimations[randomIndex])
+      setStepIndex(stepIndex + 1)
     }
-  };
+  }
 
   useEffect(() => {
     if (animationData) {
       const timer = setTimeout(() => {
-        setAnimationData(null);
-      }, 3000); // Display animation for 3 seconds
+        setAnimationData(null)
+      }, 3000) // Display animation for 3 seconds
 
-      return () => clearTimeout(timer);
+      return () => clearTimeout(timer)
     }
-  }, [animationData]);
+  }, [animationData])
 
   const defaultOptions = {
     loop: true,
@@ -124,15 +133,16 @@ const Lesson4 = () => {
     rendererSettings: {
       preserveAspectRatio: 'xMidYMid slice',
     },
-  };
+  }
 
   return (
     <div>
       <h2 className='text-xl text-center font-medium mb-1'>
-        Adding Three Numbers
+        Calculating Rectangle Area
       </h2>
       <p className='text-center'>
-        <span className='font-bold'>Mission:</span> Store variables and perform addition
+        <span className='font-bold'>Mission:</span> Calculate the area of a
+        rectangle
       </p>
       <Lesson
         elements={elements}
@@ -155,7 +165,7 @@ const Lesson4 = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Lesson4;
+export default Lesson5

@@ -6,22 +6,23 @@ import successAnimation2 from '../../../../../assets/animations/encouragements/g
 import successAnimation3 from '../../../../../assets/animations/encouragements/nice.json'
 import character from '../../../../../assets/animations/fundamentals/character.lottie'
 
+// Define elements for rectangle area calculation with updated format
 const elements = [
-  { variable: 'int length =' },
-  { variable: 'int width =' },
-  { operation: 'int area = length * width' },
-  { output: 'display area Result' },
+  { variable: 'number length =' },
+  { variable: 'number width =' },
+  { operation: 'area = [length] * [width]' },
+  { output: 'display area' },
 ]
 
 const instructions = [
-  'Enter the length of the rectangle (in units).',
-  'Enter the width of the rectangle (in units).',
-  'Calculate the area of the rectangle.',
-  'Review the calculated area result.',
+  "Drag and drop 'number length =' and input a value for the length.",
+  "Drag and drop 'number width =' and input a value for the width.",
+  "Drag and drop 'area = [length] * [width]' to calculate the area.",
+  "Drag and drop 'display area' to display the result.",
 ]
 
 const successMessage =
-  'Congratulations! You have successfully calculated the area of the rectangle.'
+  'Congratulations! You have successfully calculated the area of the rectangle:'
 
 const Lesson5 = () => {
   const [stepIndex, setStepIndex] = useState(0)
@@ -29,41 +30,52 @@ const Lesson5 = () => {
   const [startAnimation, setStartAnimation] = useState('')
   const dotLottieRef = useRef(null)
 
-  const handlePlayLesson3 = (workspace, setOutput) => {
+  const handlePlayLesson5 = (workspace, setOutput) => {
     let variables = {}
     let errors = []
-    let area = null
+    let displayArea = false
 
     workspace.forEach((item) => {
-      if (item.variable === 'int length =' || item.variable === 'int width =') {
+      if (item.type === 'number length =' || item.type === 'number width =') {
         if (item.value.trim() === '') {
-          errors.push(`Please input a value for ${item.variable}`)
+          errors.push(`Please input a value for ${item.type}`)
         } else if (isNaN(Number(item.value.trim()))) {
-          errors.push(`Value for ${item.variable} should be a number`)
+          errors.push(`Value for ${item.type} should be a number`)
         } else {
-          variables[item.variable.split('=')[0].trim()] = Number(
-            item.value.trim()
-          )
+          // Use the correct key names to match the operations
+          variables[item.type.split('=')[0].trim()] = {
+            type: 'number',
+            value: Number(item.value.trim()),
+          }
         }
+      } else if (item.type === 'area = [length] * [width]') {
+        if (!variables['number length'] || !variables['number width']) {
+          errors.push(
+            `Define both 'number length =' and 'number width =' before calculating 'area ='`
+          )
+        } else {
+          variables['area'] = {
+            type: 'number',
+            value:
+              variables['number length'].value *
+              variables['number width'].value,
+          }
+        }
+      } else if (item.type === 'display area') {
+        displayArea = true
+      } else {
+        errors.push(`Unexpected variable type: ${item.type}`)
       }
     })
 
-    if (
-      variables['int length'] !== undefined &&
-      variables['int width'] !== undefined
-    ) {
-      area = variables['int length'] * variables['int width']
-    } else {
-      errors.push('Please provide values for both length and width.')
-    }
-
     if (errors.length > 0) {
       setOutput(`Errors: ${errors.join('; ')}`)
-    } else {
-      setOutput(
-        `${successMessage}\nThe area of the rectangle is ${area} square units.`
-      )
+    } else if (displayArea) {
+      const result = `number area = ${variables['area'].value}`
+      setOutput(`${successMessage} ${result}`)
       setStartAnimation(successMessage)
+    } else {
+      setOutput(`Please include 'display area' to show the result`)
     }
   }
 
@@ -77,22 +89,22 @@ const Lesson5 = () => {
     }
   }, [startAnimation])
 
-  const handleNextStepLesson3 = (
+  const handleNextStepLesson5 = (
     workspace,
     stepIndex,
     setStepIndex,
     setAnimationData
   ) => {
     const steps = [
-      'int length =',
-      'int width =',
-      'int area = length * width',
-      'display area Result',
+      'number length =',
+      'number width =',
+      'area = [length] * [width]',
+      'display area',
     ]
 
     if (
       stepIndex < steps.length &&
-      workspace[stepIndex]?.variable === steps[stepIndex]
+      workspace[stepIndex]?.type === steps[stepIndex]
     ) {
       const successAnimations = [
         successAnimation1,
@@ -127,20 +139,20 @@ const Lesson5 = () => {
   return (
     <div>
       <h2 className='text-xl text-center font-medium mb-1'>
-        Rectangle Area Calculator
+        Calculating the Area of a Rectangle
       </h2>
       <p className='text-center'>
-        <span className='font-bold'>Mission:</span> Calculate the area of a
-        rectangle
+        <span className='font-bold'>Mission:</span> Store the length and width,
+        then calculate and display the area
       </p>
       <Lesson
         elements={elements}
         instructions={instructions}
         dotLottieRef={dotLottieRef}
         outputAnimation={character}
-        handlePlay={handlePlayLesson3}
+        handlePlay={handlePlayLesson5}
         handleNextStep={(workspace) =>
-          handleNextStepLesson3(
+          handleNextStepLesson5(
             workspace,
             stepIndex,
             setStepIndex,
