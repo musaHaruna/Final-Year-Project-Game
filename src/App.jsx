@@ -1,6 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Practice, Shop, Learn } from './dashboard/pages/index'
-import { Unit1, Unit2, Unit3 } from './dashboard/lessons/fundamentals/index'
+import {
+  Unit1,
+  Unit2,
+  Unit3,
+  Unit4,
+} from './dashboard/lessons/fundamentals/index'
 import Layout from './dashboard/layout/Layout'
 
 function App() {
@@ -15,6 +20,7 @@ function App() {
         <Route path='/fundamentals/variables' element={<Unit1 />} />
         <Route path='/fundamentals/arithematics' element={<Unit2 />} />
         <Route path='/fundamentals/conditionals' element={<Unit3 />} />
+        <Route path='/fundamentals/loops' element={<Unit4 />} />
       </Routes>
     </Router>
   )

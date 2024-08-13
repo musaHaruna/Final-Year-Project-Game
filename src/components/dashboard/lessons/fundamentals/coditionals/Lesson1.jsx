@@ -11,35 +11,14 @@ import correctSound3 from '../../../../../assets/sounds/encouragement/yipee.mp3'
 import wrongSound from '../../../../../assets/sounds/encouragement/error.mp3'
 import dragSound from '../../../../../assets/sounds/generic/click.mp3'
 import dropSound from '../../../../../assets/sounds/generic/drop.mp3'
+import skyImage from '../../../../../assets/clouds.jpg'
 
 const Lesson1 = () => {
-  const [items, setItems] = useState({
-    two: true,
-    three: true,
-    four: true,
-  })
-  const [operations, setOperations] = useState({
-    addition: true,
-    subtraction: true,
-    multiplication: true,
-    division: true,
-  })
-  const [expression, setExpression] = useState([])
-  const [result, setResult] = useState(null)
+  const [pathChosen, setPathChosen] = useState(null)
   const [showAnimation, setShowAnimation] = useState(false)
   const [animationData, setAnimationData] = useState(null)
-  const [showHint, setShowHint] = useState(false)
   const [message, setMessage] = useState('')
-  const [taskIndex, setTaskIndex] = useState(0)
-
-  const tasks = [
-    { description: 'Task 1: Add two numbers (e.g., 2 + 2)', solution: 4 },
-    {
-      description:
-        'Task 2: Add, subtract, multiply, and divide (e.g., 2 + 2 - 3 * 4 / 2)',
-      solution: -2,
-    },
-  ]
+  const [isSkyBlue, setIsSkyBlue] = useState(null) // State to track the sky color
 
   const successAnimations = [
     successAnimation1,
@@ -54,8 +33,8 @@ const Lesson1 = () => {
     audio.play()
   }
 
-  const onDragStart = (event, item) => {
-    event.dataTransfer.setData('text/plain', item)
+  const onDragStart = (event, path) => {
+    event.dataTransfer.setData('text/plain', path)
     event.currentTarget.style.cursor = 'grabbing'
     playSound(dragSound)
   }
@@ -70,79 +49,52 @@ const Lesson1 = () => {
   }
 
   const onDrop = (event) => {
-    const item = event.dataTransfer.getData('text/plain')
+    const path = event.dataTransfer.getData('text/plain')
     playSound(dropSound)
-    setExpression((prev) => [...prev, item])
+    setPathChosen(path)
+    evaluateChoice(path)
     event.dataTransfer.clearData()
     event.currentTarget.style.cursor = 'default'
   }
 
-  const evaluateExpression = () => {
-    try {
-      const parsedExpression = expression
-        .map((item) => {
-          if (item === 'two') return 2
-          if (item === 'three') return 3
-          if (item === 'four') return 4
-          if (item === 'addition') return '+'
-          if (item === 'subtraction') return '-'
-          if (item === 'multiplication') return '*'
-          if (item === 'division') return '/'
-          return item
-        })
-        .join(' ')
+  const evaluateChoice = (path) => {
+    let resultMessage = ''
+    let animation = null
+    let sound = null
 
-      const result = eval(parsedExpression)
-      setResult(result)
-      if (result === tasks[taskIndex].solution) {
-        setMessage(`Correct! The result is ${result}`)
-        setAnimationData(
-          successAnimations[
-            Math.floor(Math.random() * successAnimations.length)
-          ]
-        )
-        playSound(
-          correctSounds[Math.floor(Math.random() * correctSounds.length)]
-        )
-        setShowHint(false)
-        setTaskIndex((prevIndex) => (prevIndex + 1) % tasks.length)
-        setExpression([])
-      } else {
-        throw new Error('Invalid expression')
-      }
-    } catch {
-      setMessage('Invalid expression. Please try again.')
-      setAnimationData(tryAgainAnimation)
-      playSound(wrongSound)
-      setShowHint(true)
+    if (path === 'yes') {
+      resultMessage = 'Correct! The sky is blue.'
+      setIsSkyBlue(true)
+      animation =
+        successAnimations[Math.floor(Math.random() * successAnimations.length)]
+      sound = correctSounds[Math.floor(Math.random() * correctSounds.length)]
+    } else if (path === 'no') {
+      resultMessage = 'Incorrect. The sky is blue, not another color.'
+      setIsSkyBlue(false)
+      animation = tryAgainAnimation
+      sound = wrongSound
+    } else {
+      resultMessage = "This shouldn't happen. Please try again."
+      animation = tryAgainAnimation
+      sound = wrongSound
     }
+
+    setMessage(resultMessage)
+    setAnimationData(animation)
+    playSound(sound)
     setShowAnimation(true)
     setTimeout(() => setShowAnimation(false), 2000)
   }
 
-  const undoLastAction = () => {
-    setExpression((prev) => prev.slice(0, -1))
-  }
-
   return (
     <div>
-      <h1 className='text-3xl font-bold mb-6 text-center'>
-        Arithmetic with Variables
-      </h1>
+      <h1 className='text-3xl font-bold mb-6 text-center'>Is the Sky Blue?</h1>
       <p className='text-lg mb-4'>
-        <span className='font-semibold'>Definition:</span> Variables can hold
-        numbers and be used in arithmetic operations.
+        Drag and drop to answer the question: Is the sky blue?
       </p>
-      <p className='text-lg mb-4'>
-        <span className='font-semibold'>Purpose:</span> Learn how to use
-        variables to perform basic arithmetic operations.
-      </p>
-      <div className='mb-8'>
-        <h2 className='text-1xl font-bold mb-2'>
-          <span className='underline'>Mission:</span> Drag and drop the numbers
-          and operations to create an expression, then evaluate it.
-        </h2>
-        <p>{tasks[taskIndex].description}</p>
+
+      <div className='flex justify-center'>
+        <img src={skyImage} alt='Sky' className='w-44' />
       </div>
       <div
         onDragOver={onDragOver}
@@ -150,120 +102,30 @@ const Lesson1 = () => {
         className='w-full h-32 border-4 border-dashed flex flex-col items-center justify-center rounded-lg shadow-md mb-8'
         style={{ cursor: 'default' }}
       >
-        <h2 className='text-xl font-semibold mb-2'>Expression</h2>
-        <div className='flex'>
-          {expression.map((item, index) => (
-            <h1 key={index} className='text-4xl mx-2'>
-              {item === 'addition'
-                ? '+'
-                : item === 'subtraction'
-                ? '-'
-                : item === 'multiplication'
-                ? '*'
-                : item === 'division'
-                ? '/'
-                : item === 'two'
-                ? '2'
-                : item === 'three'
-                ? '3'
-                : '4'}
-            </h1>
-          ))}
-        </div>
+        <h2 className='text-xl font-semibold mb-2'>
+          Drag and Drop Your Choice
+        </h2>
+        {pathChosen && <p className='text-2xl mt-4'>{message}</p>}
       </div>
       <div className='flex justify-around mb-4'>
-        {items.two && (
-          <h1
-            className='text-4xl cursor-grab'
-            draggable='true'
-            onDragStart={(event) => onDragStart(event, 'two')}
-            onDragEnd={onDragEnd}
-          >
-            2
-          </h1>
-        )}
-        {items.three && (
-          <h1
-            className='text-4xl cursor-grab'
-            draggable='true'
-            onDragStart={(event) => onDragStart(event, 'three')}
-            onDragEnd={onDragEnd}
-          >
-            3
-          </h1>
-        )}
-        {items.four && (
-          <h1
-            className='text-4xl cursor-grab'
-            draggable='true'
-            onDragStart={(event) => onDragStart(event, 'four')}
-            onDragEnd={onDragEnd}
-          >
-            4
-          </h1>
-        )}
-      </div>
-      <div className='flex justify-around mb-4'>
-        {operations.addition && (
-          <h1
-            className='text-4xl cursor-grab'
-            draggable='true'
-            onDragStart={(event) => onDragStart(event, 'addition')}
-            onDragEnd={onDragEnd}
-          >
-            +
-          </h1>
-        )}
-        {operations.subtraction && (
-          <h1
-            className='text-4xl cursor-grab'
-            draggable='true'
-            onDragStart={(event) => onDragStart(event, 'subtraction')}
-            onDragEnd={onDragEnd}
-          >
-            -
-          </h1>
-        )}
-        {operations.multiplication && (
-          <h1
-            className='text-4xl cursor-grab'
-            draggable='true'
-            onDragStart={(event) => onDragStart(event, 'multiplication')}
-            onDragEnd={onDragEnd}
-          >
-            *
-          </h1>
-        )}
-        {operations.division && (
-          <h1
-            className='text-4xl cursor-grab'
-            draggable='true'
-            onDragStart={(event) => onDragStart(event, 'division')}
-            onDragEnd={onDragEnd}
-          >
-            /
-          </h1>
-        )}
-      </div>
-      <div className='flex justify-center space-x-4'>
-        <button
-          onClick={evaluateExpression}
-          className='bg-blue-500 text-white p-4 rounded-lg mt-4'
+        <h1
+          className='text-4xl cursor-grab'
+          draggable='true'
+          onDragStart={(event) => onDragStart(event, 'yes')}
+          onDragEnd={onDragEnd}
         >
-          Evaluate
-        </button>
-        <button
-          onClick={undoLastAction}
-          className='bg-gray-500 text-white p-4 rounded-lg mt-4'
+          Yes
+        </h1>
+        <h1
+          className='text-4xl cursor-grab'
+          draggable='true'
+          onDragStart={(event) => onDragStart(event, 'no')}
+          onDragEnd={onDragEnd}
         >
-          Undo
-        </button>
+          No
+        </h1>
       </div>
-      {result !== null && (
-        <p className='text-xl mt-4'>
-          <span className='font-semibold'>Result:</span> {result}
-        </p>
-      )}
+
       {showAnimation && (
         <div className='fixed inset-0 flex items-center justify-center bg-slate-800 bg-opacity-45'>
           <Lottie
@@ -276,24 +138,6 @@ const Lesson1 = () => {
             width={400}
           />
         </div>
-      )}
-      {showHint && (
-        <motion.div
-          className='fixed bottom-4 right-4 p-4 bg-white border-2 border-red-500 rounded-lg shadow-lg flex items-center space-x-4'
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <p className='text-red-500'>
-            Hint: Make sure you choose the correct arithmetic operation.
-          </p>
-          <button
-            className='bg-red-500 text-white p-2 rounded-lg'
-            onClick={() => setShowHint(false)}
-          >
-            Got it
-          </button>
-        </motion.div>
       )}
     </div>
   )
