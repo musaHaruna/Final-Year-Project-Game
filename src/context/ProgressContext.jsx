@@ -1,7 +1,7 @@
 import React, { createContext, useReducer, useContext } from 'react'
 
 // Initial state
-const initialProgress = [100, 0, 0, 0, 0, 0]
+const initialProgress = [100, 100, 0, 0, 0, 0]
 
 // Reducer function
 function progressReducer(state, action) {

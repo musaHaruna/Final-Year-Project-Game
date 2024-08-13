@@ -20,6 +20,7 @@ const Learn = () => {
     const routes = [
       '/fundamentals/variables',
       '/fundamentals/arithematics',
+      '/fundamentals/conditionals',
       // Add more routes as needed
     ]
 
