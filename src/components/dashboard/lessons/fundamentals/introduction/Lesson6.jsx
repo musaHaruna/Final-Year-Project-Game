@@ -9,12 +9,22 @@ const quizQuestions = [
   {
     question: 'Match the correct definitions.',
     leftOptions: [
-      'A variable is a place to store data.',
-      'Functions are used to reuse code.',
-      'Loops allow us to iterate through data.',
-      'Conditionals let us make decisions in our code.',
+      'A computer needs clear instructions to store data.',
+      'We can reuse instructions to make tasks easier.',
+      'To make a computer follow instructions repeatedly, we repeat them.',
+      'A computer follows instructions to make important decisions.',
     ],
-    rightOptions: ['store', 'reuse', 'iterate', 'decisions'],
+    rightOptions: ['reuse', 'decisions', 'repeat', 'store'],
+  },
+  {
+    question: 'Match the correct definitions.',
+    leftOptions: [
+      'A computer processes instructions to perform tasks.',
+      'Instructions must be clear for the computer to understand them.',
+      'We can combine multiple instructions to achieve complex tasks.',
+      'Programming allows us to give instructions that automate tasks.',
+    ],
+    rightOptions: ['combine', 'understand', 'perform tasks', 'automate'],
   },
 ]
 

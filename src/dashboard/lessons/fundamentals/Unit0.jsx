@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useProgress } from '../../../context/ProgressContext'
+import { usePoints } from '../../../context/PontsProvider'
+import PointsDisplay from '../../../components/reusabale-ui/PointsDisplay'
 import {
   ProgressBar,
   NavigationButton,
@@ -65,6 +67,7 @@ const Unit0 = () => {
     <div className='m-auto' style={{ overflowY: 'hidden' }}>
       <div className='w-11/12 m-auto mt-4 '>
         <ProgressBar progress={localProgress} />
+        <PointsDisplay />
         <div style={{ height: '440px', overflowY: 'scroll' }}>
           <CurrentLessonComponent
             onCompletionStatusChange={handleCompletionStatusChange}

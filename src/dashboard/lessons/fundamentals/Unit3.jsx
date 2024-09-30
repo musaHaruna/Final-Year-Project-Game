@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useProgress } from '../../../context/ProgressContext'
+import { usePoints } from '../../../context/PontsProvider'
+import PointsDisplay from '../../../components/reusabale-ui/PointsDisplay'
 import {
   ProgressBar,
   NavigationButton,
@@ -21,7 +23,7 @@ const Unit3 = () => {
 
   // Initialize local progress from global progress
   useEffect(() => {
-    const unitProgress = globalProgress[3] || 3// Assuming unit 1 is at index 0
+    const unitProgress = globalProgress[3] || 3 // Assuming unit 1 is at index 0
     setLocalProgress(unitProgress)
   }, [globalProgress])
 
@@ -63,6 +65,7 @@ const Unit3 = () => {
     <div className='m-auto' style={{ overflowY: 'hidden' }}>
       <div className='w-11/12 m-auto mt-4 '>
         <ProgressBar progress={localProgress} />
+        <PointsDisplay />
         <div style={{ height: '440px', overflowY: 'scroll' }}>
           <CurrentLessonComponent
             onCompletionStatusChange={handleCompletionStatusChange}

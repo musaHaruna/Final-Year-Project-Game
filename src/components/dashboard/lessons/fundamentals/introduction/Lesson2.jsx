@@ -11,6 +11,7 @@ import dropSound from '../../../../../assets/sounds/generic/drop.mp3'
 import img1 from '../../../../../assets/step1.jpg'
 import img2 from '../../../../../assets/step2.jpg'
 import img3 from '../../../../../assets/step3.jpg'
+import { usePoints } from '../../../../../context/PontsProvider' // Import the usePoints hook
 
 const DND_TYPE = 'STEP'
 
@@ -106,11 +107,9 @@ const Modal = ({ isOpen, onClose, stepImage }) => {
 const LottieModal = ({ isOpen, onClose, animation }) => {
   useEffect(() => {
     if (isOpen) {
-      // Automatically close the Lottie modal after 2 seconds
       const timer = setTimeout(() => {
-        onClose() // Call the parent function to close the modal
+        onClose()
       }, 2000)
-
       return () => clearTimeout(timer)
     }
   }, [isOpen, onClose])
@@ -128,6 +127,7 @@ const LottieModal = ({ isOpen, onClose, animation }) => {
     </div>
   )
 }
+
 const Lesson2 = () => {
   const [slots, setSlots] = useState([null, null, null])
   const [stepImages, setStepImages] = useState([null, null, null])
@@ -136,6 +136,8 @@ const Lesson2 = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [currentStepImage, setCurrentStepImage] = useState(null)
   const [isLottieOpen, setIsLottieOpen] = useState(false)
+
+  const { addPoints, deductPoints } = usePoints() // Use the addPoints and deductPoints functions
 
   const handleDrop = (item, slotIndex) => {
     const updatedSlots = [...slots]
@@ -147,7 +149,6 @@ const Lesson2 = () => {
     setStepImages(updatedImages)
     setSlots(updatedSlots)
 
-    // Show modal with the image of the current step
     setCurrentStepImage(item.step.img)
     setIsModalOpen(true)
   }
@@ -159,13 +160,17 @@ const Lesson2 = () => {
     if (JSON.stringify(correctOrder) === JSON.stringify(userOrder)) {
       new Audio(correctSound).play()
       setLottieAnimation(successAnimation)
-      setIsLottieOpen(true) // Show Lottie animation modal
+      setIsLottieOpen(true)
       setOutput("Great job! You've successfully made the sandwich!")
+
+      addPoints(15) // Add points for the correct order
     } else {
       new Audio(wrongSound).play()
       setLottieAnimation(tryAgainAnimation)
-      setIsLottieOpen(true) // Show Lottie animation modal
+      setIsLottieOpen(true)
       setOutput('Oops, the steps are out of order. Try again!')
+
+      deductPoints(5) // Deduct points for the wrong order
     }
   }
 

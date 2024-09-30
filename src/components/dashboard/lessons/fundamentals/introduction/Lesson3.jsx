@@ -8,6 +8,7 @@ import {
   StepForward,
   X,
 } from 'lucide-react'
+import { usePoints } from '../../../../../context/PontsProvider'
 
 const GRID_SIZE = 5
 const INITIAL_POSITION = { x: 2, y: 4 }
@@ -164,9 +165,11 @@ const InteractiveRobotGrid = () => {
     setIsAnimating(false)
   }
 
+  const { addPoints, deductPoints } = usePoints()
   const checkResult = () => {
     const success = robotPosition.x === 0 && robotPosition.y === 0
     setIsSuccess(success)
+    addPoints(15)
     setShowModal(true)
   }
 

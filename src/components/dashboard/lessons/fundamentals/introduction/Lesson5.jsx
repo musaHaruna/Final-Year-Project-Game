@@ -9,22 +9,23 @@ import dropSound from '../../../../../assets/sounds/generic/drop.mp3'
 
 const quizQuestions = [
   {
-    question: 'A variable is a place to _____ data.',
+    question: 'A computer needs clear instructions to _____ data.',
     correctAnswer: 'store',
-    dragOptions: ['store', 'hold', 'keep', 'save'],
+    dragOptions: ['store', 'hold', 'move', 'ignore'],
   },
   {
-    question: 'Functions are used to _____ code.',
+    question: 'We can _____ instructions to make our code easier to use again.',
     correctAnswer: 'reuse',
-    dragOptions: ['reuse', 'duplicate', 'execute', 'write'],
+    dragOptions: ['reuse', 'rewrite', 'skip', 'duplicate'],
   },
   {
-    question: 'Loops allow us to _____ through data.',
-    correctAnswer: 'iterate',
-    dragOptions: ['iterate', 'skip', 'jump', 'browse'],
+    question:
+      'To make a computer follow instructions repeatedly, we _____ them.',
+    correctAnswer: 'repeat',
+    dragOptions: ['repeat', 'skip', 'change', 'pause'],
   },
   {
-    question: 'Conditionals let us make _____ in our code.',
+    question: 'A computer follows instructions to make important _____.',
     correctAnswer: 'decisions',
     dragOptions: ['decisions', 'errors', 'prints', 'loops'],
   },

@@ -2,51 +2,57 @@ import React, { useState } from 'react'
 
 const quizQuestions = [
   {
-    question: "What does 'print' do in programming?",
+    question: 'What is programming?',
     options: [
-      'It prints out paper',
-      'It shows text on the screen',
-      'It makes a sound',
-      'It draws pictures',
+      'Writing instructions for a computer',
+      'Talking to a computer',
+      'Making a computer run faster',
+      'Turning a computer off',
     ],
-    correctAnswer: 'It shows text on the screen',
+    correctAnswer: 'Writing instructions for a computer',
   },
   {
-    question: 'Which of the following is a programming language?',
-    options: ['Python', 'HTML', 'Java', 'All of the above'],
-    correctAnswer: 'All of the above',
+    question: "What does 'print' do in programming?",
+    options: [
+      'It prints paper',
+      'It gives instructions to display text on the screen',
+      'It tells the computer to start a new task',
+      'It sends a message to another computer',
+    ],
+    correctAnswer: 'It gives instructions to display text on the screen',
   },
   {
     question: 'What is a variable in programming?',
     options: [
-      'A place to store data',
-      'A type of bug',
+      'A place to store instructions',
+      'A set of rules for the computer',
       'A command to print text',
-      'A game character',
+      'A computer process',
     ],
-    correctAnswer: 'A place to store data',
+    correctAnswer: 'A place to store instructions',
   },
   {
-    question: 'What do you use to write code?',
+    question: 'Why do programmers use loops?',
     options: [
-      'A text editor',
-      'A word processor',
-      'A web browser',
-      'A drawing app',
+      'To give repeated instructions to the computer',
+      'To stop the computer from working',
+      'To give a single instruction',
+      'To make the computer go faster',
     ],
-    correctAnswer: 'A text editor',
+    correctAnswer: 'To give repeated instructions to the computer',
   },
   {
     question: 'What is an algorithm?',
     options: [
-      'A type of computer',
-      'A step-by-step solution',
-      'A programming language',
-      'A type of math',
+      'A type of instruction that gives a step-by-step solution',
+      'A way to make computers smarter',
+      'A tool to fix bugs in programs',
+      'A program for creating pictures',
     ],
-    correctAnswer: 'A step-by-step solution',
+    correctAnswer: 'A type of instruction that gives a step-by-step solution',
   },
 ]
+
 
 const Lesson4 = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -158,20 +164,23 @@ const Lesson4 = () => {
         )}
       </div>
 
-      <div className='flex justify-between'>
-        <button
-          onClick={handlePreviousQuestion}
-          className='px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600'
-        >
-          Back
-        </button>
-        <button
-          onClick={handleNextQuestion}
-          className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600'
-        >
-          Next Question
-        </button>
-      </div>
+      {/* Show navigation buttons only if the quiz is not completed */}
+      {!showScore && (
+        <div className='flex justify-between'>
+          <button
+            onClick={handlePreviousQuestion}
+            className='px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600'
+          >
+            Back
+          </button>
+          <button
+            onClick={handleNextQuestion}
+            className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600'
+          >
+            Next Question
+          </button>
+        </div>
+      )}
     </div>
   )
 }

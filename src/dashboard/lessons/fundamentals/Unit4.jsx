@@ -12,6 +12,8 @@ import {
   Lesson5,
   Lesson6,
 } from '../../../components/dashboard/lessons/fundamentals/loops'
+import { usePoints } from '../../../context/PontsProvider'
+import PointsDisplay from '../../../components/reusabale-ui/PointsDisplay'
 
 const lessonComponents = [Lesson1, Lesson2, Lesson3, Lesson4, Lesson5, Lesson6]
 const progressIncrement = 100 / (lessonComponents.length - 1)
@@ -65,6 +67,7 @@ const Unit4 = () => {
     <div className='m-auto' style={{ overflowY: 'hidden' }}>
       <div className='w-11/12 m-auto mt-4 '>
         <ProgressBar progress={localProgress} />
+        <PointsDisplay />
         <div style={{ height: '440px', overflowY: 'scroll' }}>
           <CurrentLessonComponent
             onCompletionStatusChange={handleCompletionStatusChange}
