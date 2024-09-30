@@ -5,6 +5,7 @@ import {
   Unit2,
   Unit3,
   Unit4,
+  Unit0,
 } from './dashboard/lessons/fundamentals/index'
 import Layout from './dashboard/layout/Layout'
 
@@ -17,6 +18,7 @@ function App() {
           <Route path='practice' element={<Practice />} />
           <Route path='shop' element={<Shop />} />
         </Route>
+        <Route path='/fundamentals/introduction' element={<Unit0 />} />
         <Route path='/fundamentals/variables' element={<Unit1 />} />
         <Route path='/fundamentals/arithematics' element={<Unit2 />} />
         <Route path='/fundamentals/conditionals' element={<Unit3 />} />

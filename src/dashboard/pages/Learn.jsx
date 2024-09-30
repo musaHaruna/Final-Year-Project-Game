@@ -18,6 +18,7 @@ const Learn = () => {
     dispatch({ type: 'UPDATE_PROGRESS', index })
 
     const routes = [
+      '/fundamentals/introduction',
       '/fundamentals/variables',
       '/fundamentals/arithematics',
       '/fundamentals/conditionals',

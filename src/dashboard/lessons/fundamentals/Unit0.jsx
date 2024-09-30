@@ -10,12 +10,13 @@ import {
   Lesson3,
   Lesson4,
   Lesson5,
+  Lesson6,
 } from '../../../components/dashboard/lessons/fundamentals/introduction/index'
 
-const lessonComponents = [Lesson1, Lesson2, Lesson3, Lesson4, Lesson5]
+const lessonComponents = [Lesson1, Lesson2, Lesson3, Lesson4, Lesson5, Lesson6]
 const progressIncrement = 100 / (lessonComponents.length - 1)
 
-const Unit1 = () => {
+const Unit0 = () => {
   const { state: globalProgress, dispatch } = useProgress() // Access progress context
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0)
   const [localProgress, setLocalProgress] = useState(0)
@@ -95,4 +96,4 @@ const Unit1 = () => {
   )
 }
 
-export default Unit1
+export default Unit0
