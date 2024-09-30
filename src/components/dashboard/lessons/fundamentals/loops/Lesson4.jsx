@@ -1,171 +1,136 @@
-import React, { useState, useEffect, useRef } from 'react'
-import Lesson from '../../../../code-editor/Lesson'
-import Lottie from 'react-lottie'
-import successAnimation1 from '../../../../../assets/animations/encouragements/excellent.json'
-import successAnimation2 from '../../../../../assets/animations/encouragements/good-job.json'
-import successAnimation3 from '../../../../../assets/animations/encouragements/nice.json'
-import character from '../../../../../assets/animations/fundamentals/character.lottie'
+import React, { useState } from 'react'
+import { motion } from 'framer-motion'
 
-// Define elements for rectangle area calculation with updated format
-const elements = [
-  { variable: 'number length =' },
-  { variable: 'number width =' },
-  { operation: 'number area = [length] * [width]' },
-  { output: 'number area' },
-]
+const Lesson4 = () => {
+  const [loopStart, setLoopStart] = useState(0)
+  const [loopEnd, setLoopEnd] = useState(5)
+  const [currentIteration, setCurrentIteration] = useState(null)
+  const [isRunning, setIsRunning] = useState(false)
+  const [loopVariable, setLoopVariable] = useState('i')
 
-const instructions = [
-  "Drag and drop 'number length =' and input a value for the length.",
-  "Drag and drop 'number width =' and input a value for the width.",
-  "Drag and drop 'number area = [length] * [width]' to calculate the area.",
-  "Drag and drop 'number area' to display the result.",
-]
+  const handleStart = () => {
+    setIsRunning(true)
+    setCurrentIteration(loopStart)
+    runLoop()
+  }
 
-const successMessage =
-  'Congratulations! You have successfully calculated the area of the rectangle:'
-
-const Lesson5 = () => {
-  const [stepIndex, setStepIndex] = useState(0)
-  const [animationData, setAnimationData] = useState(null)
-  const [startAnimation, setStartAnimation] = useState('')
-  const dotLottieRef = useRef(null)
-
-  const handlePlayLesson4 = (workspace, setOutput) => {
-    let variables = {}
-    let errors = []
-    let displayArea = false
-
-    workspace.forEach((item) => {
-      if (item.type === 'number length =' || item.type === 'number width =') {
-        if (item.value.trim() === '') {
-          errors.push(`Please input a value for ${item.type}`)
-        } else if (isNaN(Number(item.value.trim()))) {
-          errors.push(`Value for ${item.type} should be a number`)
-        } else {
-          variables[item.type.split('=')[0].trim()] = {
-            type: 'number',
-            value: Number(item.value.trim()),
-          }
-        }
-      } else if (item.type === 'number area = [length] * [width]') {
-        if (!variables['number length'] || !variables['number width']) {
-          errors.push(
-            `Define both 'number length =' and 'number width =' before using 'number area ='`
-          )
-        } else {
-          variables['number area'] = {
-            type: 'number',
-            value:
-              variables['number length'].value *
-              variables['number width'].value,
-          }
-        }
-      } else if (item.type === 'number area') {
-        displayArea = true
+  const runLoop = () => {
+    let i = loopStart
+    const interval = setInterval(() => {
+      if (i < loopEnd) {
+        setCurrentIteration(i)
+        i++
       } else {
-        errors.push(`Unexpected variable type: ${item.type}`)
+        clearInterval(interval)
+        setIsRunning(false)
+        setCurrentIteration(null)
       }
-    })
-
-    if (errors.length > 0) {
-      setOutput(`Errors: ${errors.join('; ')}`)
-    } else if (displayArea) {
-      const result = `number area = ${variables['number area'].value}`
-      setOutput(`${successMessage} ${result}`)
-      setStartAnimation(successMessage)
-    } else {
-      setOutput(`Please include 'number area' to display the result`)
-    }
+    }, 1000)
   }
 
-  useEffect(() => {
-    if (dotLottieRef.current) {
-      if (startAnimation === successMessage) {
-        dotLottieRef.current.play()
-      } else {
-        dotLottieRef.current.stop()
-      }
-    }
-  }, [startAnimation])
-
-  const handleNextStepLesson4 = (
-    workspace,
-    stepIndex,
-    setStepIndex,
-    setAnimationData
-  ) => {
-    const steps = [
-      'number length =',
-      'number width =',
-      'number area = [length] * [width]',
-      'number area',
-    ]
-
-    if (
-      stepIndex < steps.length &&
-      workspace[stepIndex]?.type === steps[stepIndex]
-    ) {
-      const successAnimations = [
-        successAnimation1,
-        successAnimation2,
-        successAnimation3,
-      ]
-      const randomIndex = Math.floor(Math.random() * successAnimations.length)
-      setAnimationData(successAnimations[randomIndex])
-      setStepIndex(stepIndex + 1)
-    }
-  }
-
-  useEffect(() => {
-    if (animationData) {
-      const timer = setTimeout(() => {
-        setAnimationData(null)
-      }, 3000) // Display animation for 3 seconds
-
-      return () => clearTimeout(timer)
-    }
-  }, [animationData])
-
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice',
-    },
-  }
+  const CodeBlock = ({ children }) => (
+    <pre className='bg-gray-100 p-4 rounded-lg overflow-x-auto'>
+      <code>{children}</code>
+    </pre>
+  )
 
   return (
-    <div>
-      <h2 className='text-xl text-center font-medium mb-1'>
-        Calculating Rectangle Area
-      </h2>
-      <p className='text-center'>
-        <span className='font-bold'>Mission:</span> Calculate the area of a
-        rectangle
-      </p>
-      <Lesson
-        elements={elements}
-        instructions={instructions}
-        dotLottieRef={dotLottieRef}
-        outputAnimation={character}
-        handlePlay={handlePlayLesson4}
-        handleNextStep={(workspace) =>
-          handleNextStepLesson4(
-            workspace,
-            stepIndex,
-            setStepIndex,
-            setAnimationData
-          )
-        }
-      />
-      {animationData && (
-        <div className='fixed inset-0 flex items-center justify-center bg-slate-700 bg-opacity-25'>
-          <Lottie options={defaultOptions} height={400} width={400} />
+    <div className='p-6 max-w-4xl mx-auto'>
+      <h1 className='text-3xl font-bold mb-6 text-center'>
+        Introduction to For Loops
+      </h1>
+
+      <div className='mb-6'>
+        <h2 className='text-2xl font-semibold mb-2'>What is a For Loop?</h2>
+        <p className='mb-4'>
+          A for loop is a control flow statement that allows code to be executed
+          repeatedly based on a given condition. It's particularly useful when
+          you want to run a block of code a specific number of times.
+        </p>
+        <CodeBlock>{`FOR ${loopVariable} FROM ${loopStart} TO ${loopEnd - 1}
+    // Code to be executed in each iteration
+    PRINT ${loopVariable}
+ENDFOR`}</CodeBlock>
+      </div>
+
+      <div className='mb-6'>
+        <h2 className='text-2xl font-semibold mb-2'>Interactive Example</h2>
+        <div className='flex flex-wrap items-center space-x-4 mb-4'>
+          <label>
+            Start value:
+            <input
+              type='number'
+              value={loopStart}
+              onChange={(e) => setLoopStart(parseInt(e.target.value))}
+              className='ml-2 p-1 border rounded w-16'
+            />
+          </label>
+          <label>
+            End value:
+            <input
+              type='number'
+              value={loopEnd}
+              onChange={(e) => setLoopEnd(parseInt(e.target.value))}
+              className='ml-2 p-1 border rounded w-16'
+            />
+          </label>
+          <label>
+            Loop variable:
+            <input
+              type='text'
+              value={loopVariable}
+              onChange={(e) => setLoopVariable(e.target.value)}
+              className='ml-2 p-1 border rounded w-8'
+              maxLength='1'
+            />
+          </label>
+          <button
+            onClick={handleStart}
+            disabled={isRunning}
+            className='bg-blue-500 text-white p-2 rounded disabled:bg-gray-400'
+          >
+            Run Loop
+          </button>
         </div>
-      )}
+
+        <div className='flex flex-wrap justify-center gap-2'>
+          {Array.from({ length: loopEnd - loopStart }).map((_, index) => (
+            <motion.div
+              key={index}
+              className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold ${
+                index + loopStart === currentIteration
+                  ? 'bg-green-500 text-white'
+                  : 'bg-gray-200'
+              }`}
+              animate={{
+                scale: index + loopStart === currentIteration ? 1.2 : 1,
+                transition: { duration: 0.3 },
+              }}
+            >
+              {index + loopStart}
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      <div className='mt-6'>
+        <h2 className='text-2xl font-semibold mb-2'>Explanation</h2>
+        <ul className='list-disc pl-6'>
+          <li>
+            The loop starts at {loopVariable} = {loopStart}
+          </li>
+          <li>
+            It continues as long as {loopVariable} is less than {loopEnd}
+          </li>
+          <li>After each iteration, {loopVariable} is incremented by 1</li>
+          <li>
+            The loop body (represented by the green circle) is executed{' '}
+            {loopEnd - loopStart} times
+          </li>
+        </ul>
+      </div>
     </div>
   )
 }
 
-export default Lesson5
+export default Lesson4

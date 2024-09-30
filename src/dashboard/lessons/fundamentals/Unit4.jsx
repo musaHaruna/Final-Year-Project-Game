@@ -10,9 +10,10 @@ import {
   Lesson3,
   Lesson4,
   Lesson5,
-} from '../../../components/dashboard/lessons/fundamentals/coditionals'
+  Lesson6,
+} from '../../../components/dashboard/lessons/fundamentals/loops'
 
-const lessonComponents = [Lesson1, Lesson2, Lesson3, Lesson4, Lesson5]
+const lessonComponents = [Lesson1, Lesson2, Lesson3, Lesson4, Lesson5, Lesson6]
 const progressIncrement = 100 / (lessonComponents.length - 1)
 
 const Unit4 = () => {

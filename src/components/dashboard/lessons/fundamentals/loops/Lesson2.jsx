@@ -1,229 +1,219 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import Lottie from 'react-lottie'
-import successAnimation1 from '../../../../../assets/animations/encouragements/excellent.json'
-import successAnimation2 from '../../../../../assets/animations/encouragements/good-job.json'
-import successAnimation3 from '../../../../../assets/animations/encouragements/nice.json'
-import tryAgainAnimation from '../../../../../assets/animations/encouragements/try-again.json'
-import correctSound1 from '../../../../../assets/sounds/encouragement/bonus-points.mp3'
-import correctSound2 from '../../../../../assets/sounds/encouragement/success.mp3'
-import correctSound3 from '../../../../../assets/sounds/encouragement/yipee.mp3'
-import wrongSound from '../../../../../assets/sounds/encouragement/error.mp3'
-import dragSound from '../../../../../assets/sounds/generic/click.mp3'
-import dropSound from '../../../../../assets/sounds/generic/drop.mp3'
 
 const Lesson2 = () => {
-  const [variables] = useState({
-    a: 2,
-    b: 3,
-    c: 4,
-  })
-  const [operations] = useState({
-    '+': '+',
-    '-': '-',
-    '*': '*',
-    '/': '/',
-  })
-  const [expression, setExpression] = useState([])
-  const [result, setResult] = useState(null)
-  const [showAnimation, setShowAnimation] = useState(false)
-  const [animationData, setAnimationData] = useState(null)
-  const [showHint, setShowHint] = useState(false)
-  const [message, setMessage] = useState('')
-  const [taskIndex, setTaskIndex] = useState(0)
+  const [loopIndex, setLoopIndex] = useState(0)
+  const [isRunning, setIsRunning] = useState(false)
+  const [speed, setSpeed] = useState(1000) // milliseconds
+  const [iterations, setIterations] = useState(4)
+  const [operation, setOperation] = useState('+')
+  const [operand, setOperand] = useState(1)
+  const [result, setResult] = useState(0)
+  const [stepResults, setStepResults] = useState([])
 
-  const tasks = [
-    { description: 'Task 1: Calculate the value of a + a', solution: 4 },
-    { description: 'Task 2: Calculate the value of b - a + c', solution: 5 },
-  ]
-
-  const successAnimations = [
-    successAnimation1,
-    successAnimation2,
-    successAnimation3,
-  ]
-
-  const correctSounds = [correctSound1, correctSound2, correctSound3]
-
-  const playSound = (sound) => {
-    const audio = new Audio(sound)
-    audio.play()
-  }
-
-  const onDragStart = (event, item) => {
-    event.dataTransfer.setData('text/plain', item)
-    event.currentTarget.style.cursor = 'grabbing'
-    playSound(dragSound)
-  }
-
-  const onDragEnd = (event) => {
-    event.currentTarget.style.cursor = 'grab'
-  }
-
-  const onDragOver = (event) => {
-    event.preventDefault()
-    event.currentTarget.style.cursor = 'pointer'
-  }
-
-  const onDrop = (event) => {
-    const item = event.dataTransfer.getData('text/plain')
-    playSound(dropSound)
-    setExpression((prev) => [...prev, item])
-    event.dataTransfer.clearData()
-    event.currentTarget.style.cursor = 'default'
-  }
-
-  const evaluateExpression = () => {
-    try {
-      const parsedExpression = expression
-        .map((item) => (variables[item] !== undefined ? variables[item] : item))
-        .join(' ')
-
-      const result = eval(parsedExpression)
-      setResult(result)
-      if (result === tasks[taskIndex].solution) {
-        setMessage(`Correct! The result is ${result}`)
-        setAnimationData(
-          successAnimations[
-            Math.floor(Math.random() * successAnimations.length)
-          ]
-        )
-        playSound(
-          correctSounds[Math.floor(Math.random() * correctSounds.length)]
-        )
-        setShowHint(false)
-        setTaskIndex((prevIndex) => (prevIndex + 1) % tasks.length)
-        setExpression([])
-      } else {
-        throw new Error('Incorrect solution')
-      }
-    } catch {
-      setMessage('Invalid expression. Please try again.')
-      setAnimationData(tryAgainAnimation)
-      playSound(wrongSound)
-      setShowHint(true)
+  useEffect(() => {
+    let interval
+    if (isRunning) {
+      interval = setInterval(() => {
+        setLoopIndex((prevIndex) => {
+          const newIndex = (prevIndex + 1) % iterations
+          if (newIndex === 0 && prevIndex !== 0) {
+            setIsRunning(false) // Stops after completing all iterations
+          }
+          return newIndex
+        })
+      }, speed)
     }
-    setShowAnimation(true)
-    setTimeout(() => setShowAnimation(false), 2000)
+    return () => clearInterval(interval)
+  }, [isRunning, speed, iterations])
+
+  useEffect(() => {
+    if (isRunning) {
+      setResult((prevResult) => {
+        let newResult
+        switch (operation) {
+          case '+':
+            newResult = prevResult + operand
+            break
+          case '-':
+            newResult = prevResult - operand
+            break
+          case '*':
+            newResult = prevResult * operand
+            break
+          case '/':
+            newResult = prevResult / operand
+            break
+          default:
+            newResult = prevResult
+        }
+        setStepResults((prev) => {
+          const updatedSteps = [...prev]
+          updatedSteps[loopIndex] = newResult // Update stepResults based on zero-indexed loop
+          return updatedSteps
+        })
+        return newResult
+      })
+    }
+  }, [loopIndex, isRunning])
+
+  const handleStart = () => {
+    setIsRunning(true)
+    setResult(0)
+    setStepResults([]) // Reset the step results when starting
   }
 
-  const undoLastAction = () => {
-    setExpression((prev) => prev.slice(0, -1))
+  const handleStop = () => setIsRunning(false)
+  const handleReset = () => {
+    setIsRunning(false)
+    setLoopIndex(0)
+    setResult(0)
+    setStepResults([])
   }
+
+  const handleSpeedChange = (e) => setSpeed(Number(e.target.value))
+  const handleIterationsChange = (e) => {
+    const newIterations = Number(e.target.value)
+    setIterations(newIterations)
+    setLoopIndex(0)
+    setStepResults([]) // Reset stepResults when iterations change
+  }
+  const handleOperationChange = (e) => setOperation(e.target.value)
+  const handleOperandChange = (e) => setOperand(Number(e.target.value))
 
   return (
-    <div>
+    <div className='p-6 max-w-4xl mx-auto'>
       <h1 className='text-3xl font-bold mb-6 text-center'>
-        Arithmetic with Variables
+        Interactive Loop Visualization
       </h1>
       <p className='text-lg mb-4'>
-        <span className='font-semibold'>Definition:</span> Variables can hold
-        numbers and be used in arithmetic operations.
+        This component simulates a programming loop. You can set the number of
+        iterations, choose an arithmetic operation, and see how the result
+        changes in each step.
       </p>
-      <p className='text-lg mb-4'>
-        <span className='font-semibold'>Purpose:</span> Learn how to use
-        variables to perform basic arithmetic operations.
-      </p>
+
       <div className='mb-8'>
-        <h2 className='text-1xl font-bold mb-2'>
-          <span className='underline'>Mission:</span> Drag and drop the
-          variables and operations to create an expression, then evaluate it.
-        </h2>
-        <p>{tasks[taskIndex].description}</p>
-      </div>
-      <div
-        onDragOver={onDragOver}
-        onDrop={onDrop}
-        className='w-full h-32 border-4 border-dashed flex flex-col items-center justify-center rounded-lg shadow-md mb-8'
-        style={{ cursor: 'default' }}
-      >
-        <h2 className='text-xl font-semibold mb-2'>Expression</h2>
-        <div className='flex'>
-          {expression.map((item, index) => (
-            <h1 key={index} className='text-4xl mx-2'>
-              {variables[item] !== undefined ? item : item}
-            </h1>
+        <h2 className='text-2xl font-bold mb-4'>Loop Progress</h2>
+        <div className='flex justify-center items-center space-x-4 mb-4'>
+          {[...Array(iterations)].map((_, index) => (
+            <motion.div
+              key={index}
+              className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold ${
+                index === loopIndex ? 'bg-blue-500 text-white' : 'bg-gray-200'
+              }`}
+              animate={{
+                scale: index === loopIndex ? 1.2 : 1,
+                transition: { duration: 0.3 },
+              }}
+            >
+              {stepResults[index] !== undefined ? stepResults[index] : index}{' '}
+              {/* Start counting from 0 */}
+            </motion.div>
           ))}
         </div>
-      </div>
-      <div className='flex justify-around mb-4'>
-        {Object.entries(variables).map(([variable, value]) => (
-          <div key={variable} className='text-center'>
-            <h1
-              className='text-4xl cursor-grab'
-              draggable='true'
-              onDragStart={(event) => onDragStart(event, variable)}
-              onDragEnd={onDragEnd}
-            >
-              {variable}
-            </h1>
-            <p>{`${variable} = ${value}`}</p>
-          </div>
-        ))}
-      </div>
-      <div className='flex justify-around mb-4'>
-        {Object.entries(operations).map(([symbol]) => (
-          <h1
-            key={symbol}
-            className='text-4xl cursor-grab'
-            draggable='true'
-            onDragStart={(event) => onDragStart(event, symbol)}
-            onDragEnd={onDragEnd}
-          >
-            {symbol}
-          </h1>
-        ))}
-      </div>
-      <div className='flex justify-center space-x-4'>
-        <button
-          onClick={evaluateExpression}
-          className='bg-blue-500 text-white p-4 rounded-lg mt-4'
-        >
-          Evaluate
-        </button>
-        <button
-          onClick={undoLastAction}
-          className='bg-gray-500 text-white p-4 rounded-lg mt-4'
-        >
-          Undo
-        </button>
-      </div>
-      {result !== null && (
-        <p className='text-xl mt-4'>
-          <span className='font-semibold'>Result:</span> {result}
+        <p className='text-center mt-4'>
+          Current Step: {loopIndex} / {iterations - 1}
         </p>
-      )}
-      {showAnimation && (
-        <div className='fixed inset-0 flex items-center justify-center bg-slate-800 bg-opacity-45'>
-          <Lottie
-            options={{
-              loop: false,
-              autoplay: true,
-              animationData: animationData,
-            }}
-            height={400}
-            width={400}
-          />
+        <p className='text-center mt-2'>Current Result: {result}</p>
+      </div>
+
+      <div className='mb-8'>
+        <h2 className='text-2xl font-bold mb-4'>Loop Configuration</h2>
+        <div className='flex flex-col items-center space-y-4'>
+          <label className='flex items-center'>
+            Number of Iterations:
+            <input
+              type='number'
+              min='2'
+              max='10'
+              value={iterations}
+              onChange={handleIterationsChange}
+              className='ml-4 p-1 border rounded'
+            />
+          </label>
+          <label className='flex items-center'>
+            Operation:
+            <select
+              value={operation}
+              onChange={handleOperationChange}
+              className='ml-4 p-1 border rounded'
+            >
+              <option value='+'>Addition (+)</option>
+              <option value='-'>Subtraction (-)</option>
+              <option value='*'>Multiplication (*)</option>
+              <option value='/'>Division (/)</option>
+            </select>
+          </label>
+          <label className='flex items-center'>
+            Operand:
+            <input
+              type='number'
+              value={operand}
+              onChange={handleOperandChange}
+              className='ml-4 p-1 border rounded'
+            />
+          </label>
         </div>
-      )}
-      {showHint && (
-        <motion.div
-          className='fixed bottom-4 right-4 p-4 bg-white border-2 border-red-500 rounded-lg shadow-lg flex items-center space-x-4'
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <p className='text-red-500'>
-            Hint: Make sure you choose the correct arithmetic operation.
-          </p>
+      </div>
+
+      <div className='mb-8'>
+        <h2 className='text-2xl font-bold mb-4'>Controls</h2>
+        <div className='flex justify-center space-x-4 mb-4'>
           <button
-            className='bg-red-500 text-white p-2 rounded-lg'
-            onClick={() => setShowHint(false)}
+            onClick={handleStart}
+            className='bg-green-500 text-white p-2 rounded-lg'
+            disabled={isRunning}
           >
-            Got it
+            Start
           </button>
-        </motion.div>
-      )}
+          <button
+            onClick={handleStop}
+            className='bg-red-500 text-white p-2 rounded-lg'
+            disabled={!isRunning}
+          >
+            Stop
+          </button>
+          <button
+            onClick={handleReset}
+            className='bg-gray-500 text-white p-2 rounded-lg'
+          >
+            Reset
+          </button>
+        </div>
+        <div className='flex flex-col items-center space-y-4'>
+          <label className='flex items-center'>
+            Speed (ms):
+            <input
+              type='range'
+              min='100'
+              max='2000'
+              step='100'
+              value={speed}
+              onChange={handleSpeedChange}
+              className='ml-4'
+            />
+            <span className='ml-2'>{speed}ms</span>
+          </label>
+        </div>
+      </div>
+
+      <div className='mt-8'>
+        <h2 className='text-2xl font-bold mb-4'>How It Works</h2>
+        <ol className='list-decimal list-inside space-y-2'>
+          <li>Set the number of iterations for your loop.</li>
+          <li>Choose an arithmetic operation and an operand.</li>
+          <li>Click 'Start' to run the loop.</li>
+          <li>
+            Watch as the loop executes, performing the chosen operation in each
+            step.
+          </li>
+          <li>
+            The result of each step is displayed in the corresponding circle.
+          </li>
+          <li>The loop stops automatically after completing all iterations.</li>
+          <li>You can stop the loop at any time or reset it to start over.</li>
+        </ol>
+      </div>
     </div>
   )
 }

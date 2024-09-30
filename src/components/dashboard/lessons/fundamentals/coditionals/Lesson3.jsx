@@ -12,6 +12,10 @@ const elements = [
   { variable: 'number B =' },
   { operation: 'number C = [A] + [B]' },
   { output: 'display C' },
+  { conditional: 'if [A] > [B]' },
+  { conditional: 'else' },
+  { action: 'display "A is greater"' },
+  { action: 'display "B is greater or equal"' },
 ]
 
 const instructions = [
@@ -19,6 +23,10 @@ const instructions = [
   "Drag and drop 'number B =' and input a value.",
   "Drag and drop 'number C = [A] + [B]' to perform the addition.",
   "Drag and drop 'number C' to display the result.",
+  "Drag and drop 'if [A] > [B]' to create a conditional statement.",
+  "Drag and drop 'else' to handle the alternative condition.",
+  "Drag and drop 'display \"A is greater\"' inside the 'if' block.",
+  "Drag and drop 'display \"B is greater or equal\"' inside the 'else' block.",
 ]
 
 const successMessage =
@@ -34,6 +42,8 @@ const Lesson3 = () => {
     let variables = {}
     let errors = []
     let displayC = false
+    let conditionalBlock = null
+    let elseBlock = null
 
     workspace.forEach((item) => {
       if (item.type === 'number A =' || item.type === 'number B =') {
@@ -60,6 +70,33 @@ const Lesson3 = () => {
         }
       } else if (item.type === 'display C') {
         displayC = true
+      } else if (item.type.startsWith('if ')) {
+        const condition = item.type
+          .slice(3)
+          .replace(
+            /\[([A-Z])\]/g,
+            (_, p1) => variables[`number ${p1}`]?.value || 0
+          )
+        try {
+          conditionalBlock = {
+            condition: eval(condition),
+            actions: [],
+          }
+        } catch (e) {
+          errors.push(`Invalid condition: ${item.type}`)
+        }
+      } else if (item.type === 'else') {
+        elseBlock = {
+          actions: [],
+        }
+      } else if (item.type.startsWith('display ')) {
+        if (conditionalBlock && !elseBlock) {
+          conditionalBlock.actions.push(item.type.slice(8).replace(/"/g, ''))
+        } else if (elseBlock) {
+          elseBlock.actions.push(item.type.slice(8).replace(/"/g, ''))
+        } else {
+          errors.push(`'display' actions should be inside a conditional block`)
+        }
       } else {
         errors.push(`Unexpected variable type: ${item.type}`)
       }
@@ -67,14 +104,23 @@ const Lesson3 = () => {
 
     if (errors.length > 0) {
       setOutput(`Errors: ${errors.join('; ')}`)
-    } else if (displayC) {
-      const result = Object.entries(variables)
-        .map(([key, { value }]) => `${key} = ${value}`)
-        .join(', ')
-      setOutput(`${successMessage} ${result}`)
-      setStartAnimation(successMessage)
     } else {
-      setOutput(`Please include 'number C' to display the result`)
+      let result = ''
+      if (conditionalBlock) {
+        if (conditionalBlock.condition) {
+          result += conditionalBlock.actions.join(' ') + '. '
+        } else if (elseBlock) {
+          result += elseBlock.actions.join(' ') + '. '
+        }
+      }
+
+      if (displayC) {
+        const cValue = variables['number C']?.value
+        result += `${successMessage} C = ${cValue}`
+        setStartAnimation(successMessage)
+      }
+
+      setOutput(result)
     }
   }
 
@@ -99,6 +145,10 @@ const Lesson3 = () => {
       'number B =',
       'number C = [A] + [B]',
       'number C',
+      'if [A] > [B]',
+      'display "A is greater"',
+      'else',
+      'display "B is greater or equal"',
     ]
 
     if (
@@ -138,11 +188,11 @@ const Lesson3 = () => {
   return (
     <div>
       <h2 className='text-xl text-center font-medium mb-1'>
-        Storing values in a variable
+        Storing values in a variable and Using Conditionals
       </h2>
       <p className='text-center'>
-        <span className='font-bold'>Mission:</span> Store variables and perform
-        addition
+        <span className='font-bold'>Mission:</span> Store variables, perform
+        addition, and use conditionals
       </p>
       <Lesson
         elements={elements}

@@ -4,27 +4,35 @@ import Lottie from 'react-lottie'
 import successAnimation1 from '../../../../../assets/animations/encouragements/excellent.json'
 import successAnimation2 from '../../../../../assets/animations/encouragements/good-job.json'
 import successAnimation3 from '../../../../../assets/animations/encouragements/nice.json'
+import tryAgainAnimation from '../../../../../assets/animations/encouragements/try-again.json'
 import character from '../../../../../assets/animations/fundamentals/character.lottie'
 
-// Define elements for rectangle area calculation with updated format
 const elements = [
-  { variable: 'number length =' },
-  { variable: 'number width =' },
-  { operation: 'number area = [length] * [width]' },
-  { output: 'number area' },
+  { variable: 'number A =' },
+  { variable: 'number B =' },
+  { operation: 'number C = [A] + [B]' },
+  { output: 'display C' },
+  { conditional: 'if [A] > [B]' },
+  { conditional: 'else' },
+  { action: 'display "A is greater"' },
+  { action: 'display "B is greater or equal"' },
 ]
 
 const instructions = [
-  "Drag and drop 'number length =' and input a value for the length.",
-  "Drag and drop 'number width =' and input a value for the width.",
-  "Drag and drop 'number area = [length] * [width]' to calculate the area.",
-  "Drag and drop 'number area' to display the result.",
+  "Drag and drop 'number A =' and input a value.",
+  "Drag and drop 'number B =' and input a value.",
+  "Drag and drop 'number C = [A] + [B]' to perform the addition.",
+  "Drag and drop 'number C' to display the result.",
+  "Drag and drop 'if [A] > [B]' to create a conditional statement.",
+  "Drag and drop 'else' to handle the alternative condition.",
+  "Drag and drop 'display \"A is greater\"' inside the 'if' block.",
+  "Drag and drop 'display \"B is greater or equal\"' inside the 'else' block.",
 ]
 
 const successMessage =
-  'Congratulations! You have successfully calculated the area of the rectangle:'
+  'Congratulations! You have successfully stored the variables and performed the addition:'
 
-const Lesson5 = () => {
+const Lesson4 = () => {
   const [stepIndex, setStepIndex] = useState(0)
   const [animationData, setAnimationData] = useState(null)
   const [startAnimation, setStartAnimation] = useState('')
@@ -33,10 +41,12 @@ const Lesson5 = () => {
   const handlePlayLesson4 = (workspace, setOutput) => {
     let variables = {}
     let errors = []
-    let displayArea = false
+    let displayC = false
+    let conditionalBlock = null
+    let elseBlock = null
 
     workspace.forEach((item) => {
-      if (item.type === 'number length =' || item.type === 'number width =') {
+      if (item.type === 'number A =' || item.type === 'number B =') {
         if (item.value.trim() === '') {
           errors.push(`Please input a value for ${item.type}`)
         } else if (isNaN(Number(item.value.trim()))) {
@@ -47,21 +57,46 @@ const Lesson5 = () => {
             value: Number(item.value.trim()),
           }
         }
-      } else if (item.type === 'number area = [length] * [width]') {
-        if (!variables['number length'] || !variables['number width']) {
+      } else if (item.type === 'number C = [A] + [B]') {
+        if (!variables['number A'] || !variables['number B']) {
           errors.push(
-            `Define both 'number length =' and 'number width =' before using 'number area ='`
+            `Define both 'number A =' and 'number B =' before using 'number C ='`
           )
         } else {
-          variables['number area'] = {
+          variables['number C'] = {
             type: 'number',
-            value:
-              variables['number length'].value *
-              variables['number width'].value,
+            value: variables['number A'].value + variables['number B'].value,
           }
         }
-      } else if (item.type === 'number area') {
-        displayArea = true
+      } else if (item.type === 'display C') {
+        displayC = true
+      } else if (item.type.startsWith('if ')) {
+        const condition = item.type
+          .slice(3)
+          .replace(
+            /\[([A-Z])\]/g,
+            (_, p1) => variables[`number ${p1}`]?.value || 0
+          )
+        try {
+          conditionalBlock = {
+            condition: eval(condition),
+            actions: [],
+          }
+        } catch (e) {
+          errors.push(`Invalid condition: ${item.type}`)
+        }
+      } else if (item.type === 'else') {
+        elseBlock = {
+          actions: [],
+        }
+      } else if (item.type.startsWith('display ')) {
+        if (conditionalBlock && !elseBlock) {
+          conditionalBlock.actions.push(item.type.slice(8).replace(/"/g, ''))
+        } else if (elseBlock) {
+          elseBlock.actions.push(item.type.slice(8).replace(/"/g, ''))
+        } else {
+          errors.push(`'display' actions should be inside a conditional block`)
+        }
       } else {
         errors.push(`Unexpected variable type: ${item.type}`)
       }
@@ -69,12 +104,23 @@ const Lesson5 = () => {
 
     if (errors.length > 0) {
       setOutput(`Errors: ${errors.join('; ')}`)
-    } else if (displayArea) {
-      const result = `number area = ${variables['number area'].value}`
-      setOutput(`${successMessage} ${result}`)
-      setStartAnimation(successMessage)
     } else {
-      setOutput(`Please include 'number area' to display the result`)
+      let result = ''
+      if (conditionalBlock) {
+        if (conditionalBlock.condition) {
+          result += conditionalBlock.actions.join(' ') + '. '
+        } else if (elseBlock) {
+          result += elseBlock.actions.join(' ') + '. '
+        }
+      }
+
+      if (displayC) {
+        const cValue = variables['number C']?.value
+        result += `${successMessage} C = ${cValue}`
+        setStartAnimation(successMessage)
+      }
+
+      setOutput(result)
     }
   }
 
@@ -95,10 +141,14 @@ const Lesson5 = () => {
     setAnimationData
   ) => {
     const steps = [
-      'number length =',
-      'number width =',
-      'number area = [length] * [width]',
-      'number area',
+      'number A =',
+      'number B =',
+      'number C = [A] + [B]',
+      'number C',
+      'if [A] > [B]',
+      'display "A is greater"',
+      'else',
+      'display "B is greater or equal"',
     ]
 
     if (
@@ -138,11 +188,11 @@ const Lesson5 = () => {
   return (
     <div>
       <h2 className='text-xl text-center font-medium mb-1'>
-        Calculating Rectangle Area
+        Storing values in a variable and Using Conditionals
       </h2>
       <p className='text-center'>
-        <span className='font-bold'>Mission:</span> Calculate the area of a
-        rectangle
+        <span className='font-bold'>Mission:</span> Store variables, perform
+        addition, and use conditionals
       </p>
       <Lesson
         elements={elements}
@@ -168,4 +218,4 @@ const Lesson5 = () => {
   )
 }
 
-export default Lesson5
+export default Lesson4

@@ -1,170 +1,303 @@
-import React, { useState, useEffect, useRef } from 'react'
-import Lesson from '../../../../code-editor/Lesson'
-import Lottie from 'react-lottie'
-import successAnimation1 from '../../../../../assets/animations/encouragements/excellent.json'
-import successAnimation2 from '../../../../../assets/animations/encouragements/good-job.json'
-import successAnimation3 from '../../../../../assets/animations/encouragements/nice.json'
-import tryAgainAnimation from '../../../../../assets/animations/encouragements/try-again.json'
-import character from '../../../../../assets/animations/fundamentals/character.lottie'
-
-const elements = [
-  { variable: 'number A =' },
-  { variable: 'number B =' },
-  { operation: 'number C = [A] + [B]' },
-  { output: 'display C' },
-]
-
-const instructions = [
-  "Drag and drop 'number A =' and input a value.",
-  "Drag and drop 'number B =' and input a value.",
-  "Drag and drop 'number C = [A] + [B]' to perform the addition.",
-  "Drag and drop 'number C' to display the result.",
-]
-
-const successMessage =
-  'Congratulations! You have successfully stored the variables and performed the addition:'
+import React, { useState } from 'react'
+import { DndProvider, useDrag, useDrop } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { motion } from 'framer-motion' // Import framer-motion for animations
 
 const Lesson3 = () => {
-  const [stepIndex, setStepIndex] = useState(0)
-  const [animationData, setAnimationData] = useState(null)
-  const [startAnimation, setStartAnimation] = useState('')
-  const dotLottieRef = useRef(null)
+  const [loopIndex, setLoopIndex] = useState(0)
+  const [isRunning, setIsRunning] = useState(false)
+  const [iterations, setIterations] = useState(3) // Set number of steps (3 tasks)
+  const [operation, setOperation] = useState('')
+  const [operand1, setOperand1] = useState(null)
+  const [operand2, setOperand2] = useState(null)
+  const [feedback, setFeedback] = useState('') // Feedback for the user
+  const [variableValues, setVariableValues] = useState({ x: 0, y: 0, z: 0 }) // Store values of variables
+  const [userResult, setUserResult] = useState(null) // User's calculated result
 
-  const handlePlayLesson4 = (workspace, setOutput) => {
-    let variables = {}
-    let errors = []
-    let displayC = false
+  const tasks = [
+    { targetVariable: 'x', operation: '3 + 5', targetResult: 8 }, // Task 1
+    { targetVariable: 'y', operation: 'x * 2', targetResult: 16 }, // Task 2
+    { targetVariable: 'z', operation: 'y - 4', targetResult: 12 }, // Task 3
+  ]
 
-    workspace.forEach((item) => {
-      if (item.type === 'number A =' || item.type === 'number B =') {
-        if (item.value.trim() === '') {
-          errors.push(`Please input a value for ${item.type}`)
-        } else if (isNaN(Number(item.value.trim()))) {
-          errors.push(`Value for ${item.type} should be a number`)
-        } else {
-          variables[item.type.split('=')[0].trim()] = {
-            type: 'number',
-            value: Number(item.value.trim()),
-          }
-        }
-      } else if (item.type === 'number C = [A] + [B]') {
-        if (!variables['number A'] || !variables['number B']) {
-          errors.push(
-            `Define both 'number A =' and 'number B =' before using 'number C ='`
-          )
-        } else {
-          variables['number C'] = {
-            type: 'number',
-            value: variables['number A'].value + variables['number B'].value,
-          }
-        }
-      } else if (item.type === 'display C') {
-        displayC = true
-      } else {
-        errors.push(`Unexpected variable type: ${item.type}`)
-      }
+  const operations = ['+', '-', '*', '/']
+  const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  const variables = Object.keys(variableValues)
+
+  // Number component
+  const NumberItem = ({ number }) => {
+    const [, drag] = useDrag(() => ({
+      type: 'operand',
+      item: { value: number },
+    }))
+    return (
+      <div ref={drag} className='p-2 m-2 bg-green-300 rounded'>
+        {number}
+      </div>
+    )
+  }
+
+  // Variable component (dragable)
+  const VariableItem = ({ variable }) => {
+    const [, drag] = useDrag(() => ({
+      type: 'operand',
+      item: { value: variableValues[variable] },
+    }))
+    return (
+      <div ref={drag} className='p-2 m-2 bg-blue-300 rounded'>
+        {variable} ({variableValues[variable]})
+      </div>
+    )
+  }
+
+  // Operator component
+  const OperationItem = ({ operator }) => {
+    const [, drag] = useDrag(() => ({
+      type: 'operator',
+      item: { operator },
+    }))
+    return (
+      <div ref={drag} className='p-2 m-2 bg-yellow-300 rounded'>
+        {operator}
+      </div>
+    )
+  }
+
+  // Operand drop zone 1
+  const OperandDropZone1 = () => {
+    const [{ isOver }, drop] = useDrop({
+      accept: 'operand',
+      drop: (item) => setOperand1(item.value),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
     })
-
-    if (errors.length > 0) {
-      setOutput(`Errors: ${errors.join('; ')}`)
-    } else if (displayC) {
-      const result = Object.entries(variables)
-        .map(([key, { value }]) => `${key} = ${value}`)
-        .join(', ')
-      setOutput(`${successMessage} ${result}`)
-      setStartAnimation(successMessage)
-    } else {
-      setOutput(`Please include 'number C' to display the result`)
-    }
+    return (
+      <div
+        ref={drop}
+        className={`p-4 border-dashed border-2 ${
+          isOver ? 'bg-gray-200' : 'bg-white'
+        }`}
+      >
+        {operand1 !== null
+          ? `Operand 1: ${operand1}`
+          : 'Drag the first number or variable here'}
+      </div>
+    )
   }
 
-  useEffect(() => {
-    if (dotLottieRef.current) {
-      if (startAnimation === successMessage) {
-        dotLottieRef.current.play()
-      } else {
-        dotLottieRef.current.stop()
+  // Operand drop zone 2
+  const OperandDropZone2 = () => {
+    const [{ isOver }, drop] = useDrop({
+      accept: 'operand',
+      drop: (item) => setOperand2(item.value),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    })
+    return (
+      <div
+        ref={drop}
+        className={`p-4 border-dashed border-2 ${
+          isOver ? 'bg-gray-200' : 'bg-white'
+        }`}
+      >
+        {operand2 !== null
+          ? `Operand 2: ${operand2}`
+          : 'Drag the second number or variable here'}
+      </div>
+    )
+  }
+
+  // Operator drop zone
+  const OperationDropZone = () => {
+    const [{ isOver }, drop] = useDrop({
+      accept: 'operator',
+      drop: (item) => setOperation(item.operator),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    })
+    return (
+      <div
+        ref={drop}
+        className={`p-4 border-dashed border-2 ${
+          isOver ? 'bg-gray-200' : 'bg-white'
+        }`}
+      >
+        {operation ? `Operation: ${operation}` : 'Drag an operator here'}
+      </div>
+    )
+  }
+
+  const handleStart = () => {
+    setIsRunning(true)
+    setFeedback('')
+    setLoopIndex(0) // Start at the first task
+    setVariableValues({ x: 0, y: 0, z: 0 }) // Reset variables
+    setUserResult(null) // Reset user result
+  }
+
+  const handleEvaluate = () => {
+    const currentTask = tasks[loopIndex]
+    let calculatedResult
+
+    if (operation && operand1 !== null && operand2 !== null) {
+      switch (operation) {
+        case '+':
+          calculatedResult = operand1 + operand2
+          break
+        case '-':
+          calculatedResult = operand1 - operand2
+          break
+        case '*':
+          calculatedResult = operand1 * operand2
+          break
+        case '/':
+          calculatedResult = operand1 / operand2
+          break
+        default:
+          return
       }
-    }
-  }, [startAnimation])
+      setUserResult(calculatedResult)
 
-  const handleNextStepLesson4 = (
-    workspace,
-    stepIndex,
-    setStepIndex,
-    setAnimationData
-  ) => {
-    const steps = [
-      'number A =',
-      'number B =',
-      'number C = [A] + [B]',
-      'number C',
-    ]
-
-    if (
-      stepIndex < steps.length &&
-      workspace[stepIndex]?.type === steps[stepIndex]
-    ) {
-      const successAnimations = [
-        successAnimation1,
-        successAnimation2,
-        successAnimation3,
-      ]
-      const randomIndex = Math.floor(Math.random() * successAnimations.length)
-      setAnimationData(successAnimations[randomIndex])
-      setStepIndex(stepIndex + 1)
+      if (calculatedResult === currentTask.targetResult) {
+        setFeedback('Correct!')
+        setVariableValues((prev) => ({
+          ...prev,
+          [currentTask.targetVariable]: calculatedResult,
+        }))
+        setLoopIndex(loopIndex + 1)
+        setOperation('')
+        setOperand1(null)
+        setOperand2(null)
+      } else {
+        setFeedback(
+          `Incorrect! You calculated ${calculatedResult}, but the correct result is ${currentTask.targetResult}`
+        )
+      }
+    } else {
+      setFeedback(
+        'Please complete the task by dragging both operands and an operation.'
+      )
     }
   }
 
-  useEffect(() => {
-    if (animationData) {
-      const timer = setTimeout(() => {
-        setAnimationData(null)
-      }, 3000) // Display animation for 3 seconds
+  const handleReset = () => {
+    setIsRunning(false)
+    setLoopIndex(0)
+    setFeedback('')
+    setUserResult(null)
+    setVariableValues({ x: 0, y: 0, z: 0 })
+  }
 
-      return () => clearTimeout(timer)
-    }
-  }, [animationData])
-
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice',
-    },
+  // Render progress as numbered steps with animation
+  const renderProgress = () => {
+    return (
+      <div className='flex space-x-4 justify-center mb-8'>
+        {[...Array(iterations)].map((_, index) => (
+          <motion.div
+            key={index}
+            className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold ${
+              index === loopIndex ? 'bg-blue-500 text-white' : 'bg-gray-200'
+            }`}
+            animate={{
+              scale: index === loopIndex ? 1.2 : 1,
+              transition: { duration: 0.3 },
+            }}
+          >
+            {index + 1}
+          </motion.div>
+        ))}
+      </div>
+    )
   }
 
   return (
-    <div>
-      <h2 className='text-xl text-center font-medium mb-1'>
-        Storing values in a variable
-      </h2>
-      <p className='text-center'>
-        <span className='font-bold'>Mission:</span> Store variables and perform
-        addition
-      </p>
-      <Lesson
-        elements={elements}
-        instructions={instructions}
-        dotLottieRef={dotLottieRef}
-        outputAnimation={character}
-        handlePlay={handlePlayLesson4}
-        handleNextStep={(workspace) =>
-          handleNextStepLesson4(
-            workspace,
-            stepIndex,
-            setStepIndex,
-            setAnimationData
-          )
-        }
-      />
-      {animationData && (
-        <div className='fixed inset-0 flex items-center justify-center bg-slate-700 bg-opacity-25'>
-          <Lottie options={defaultOptions} height={400} width={400} />
+    <DndProvider backend={HTML5Backend}>
+      <div className='p-6 max-w-4xl mx-auto'>
+        <h1 className='text-3xl font-bold mb-6 text-center'>
+          Task-Based Loop with Variables and Progress
+        </h1>
+        <p className='text-lg mb-4'>
+          Complete each task by assigning the correct result to the specified
+          variable using drag and drop.
+        </p>
+
+        {/* Render animated progress circles */}
+        {renderProgress()}
+
+        <div className='mb-8'>
+          {isRunning && loopIndex < iterations ? (
+            <div className='flex  items-center space-y-4'>
+              <p>
+                Step {loopIndex + 1}: {tasks[loopIndex].operation}
+              </p>
+              <OperandDropZone1 />
+              <OperandDropZone2 />
+              <OperationDropZone />
+              <button
+                onClick={handleEvaluate}
+                className='bg-blue-500 text-white p-2 rounded-lg mt-4'
+              >
+                Evaluate
+              </button>
+              <p>{feedback}</p>
+            </div>
+          ) : isRunning && loopIndex === iterations ? (
+            <div>
+              <h2 className='text-2xl font-bold mb-4'>Congratulations!</h2>
+              <p className='text-lg'>
+                You've completed all tasks and successfully assigned the
+                variables!
+              </p>
+              <button
+                onClick={handleReset}
+                className='bg-blue-500 text-white p-2 rounded-lg mt-4'
+              >
+                Restart
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={handleStart}
+              className='bg-green-500 text-white p-4 rounded-lg'
+            >
+              Start Loop
+            </button>
+          )}
         </div>
-      )}
-    </div>
+
+        <div className='grid grid-cols-2 gap-4'>
+          <div>
+            <h3 className='text-lg font-bold mb-2'>Numbers</h3>
+            <div className='flex flex-wrap'>
+              {numbers.map((num) => (
+                <NumberItem key={num} number={num} />
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className='text-lg font-bold mb-2'>Variables</h3>
+            <div className='flex flex-wrap'>
+              {variables.map((variable) => (
+                <VariableItem key={variable} variable={variable} />
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className='text-lg font-bold mb-2'>Operations</h3>
+            <div className='flex flex-wrap'>
+              {operations.map((operator) => (
+                <OperationItem key={operator} operator={operator} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </DndProvider>
   )
 }
 

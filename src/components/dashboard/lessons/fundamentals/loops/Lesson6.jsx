@@ -1,32 +1,35 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 
-const Lesson5 = () => {
-  const [loopStart, setLoopStart] = useState(0)
+const Lesson6 = () => {
+  const [loopStart, setLoopStart] = useState(1)
   const [loopEnd, setLoopEnd] = useState(5)
   const [currentIteration, setCurrentIteration] = useState(null)
   const [isRunning, setIsRunning] = useState(false)
   const [loopVariable, setLoopVariable] = useState('i')
-  const [sum, setSum] = useState(0)
-  const [numberToAdd, setNumberToAdd] = useState(1)
+  const [result, setResult] = useState(0)
   const [isFinished, setIsFinished] = useState(false)
+  const [a, setA] = useState(2)
+  const [b, setB] = useState(3)
+  const [c, setC] = useState(1)
 
   const handleStart = () => {
     setIsRunning(true)
     setIsFinished(false)
     setCurrentIteration(loopStart)
-    setSum(0)
+    setResult(0)
     runLoop()
   }
 
   const runLoop = () => {
     let i = loopStart
-    let currentSum = 0
+    let currentResult = 0
     const interval = setInterval(() => {
-      if (i < loopEnd) {
-        currentSum += numberToAdd
+      if (i <= loopEnd) {
+        const iterationResult = a * i * i + b * i + c
+        currentResult += iterationResult
         setCurrentIteration(i)
-        setSum(currentSum)
+        setResult(currentResult)
         i++
       } else {
         clearInterval(interval)
@@ -46,24 +49,25 @@ const Lesson5 = () => {
   return (
     <div className='p-6 max-w-4xl mx-auto'>
       <h1 className='text-3xl font-bold mb-6 text-center'>
-        Interactive For Loop with Task
+        Interactive For Loop with Complex Task
       </h1>
 
       <div className='mb-6'>
         <h2 className='text-2xl font-semibold mb-2'>
-          Task: Sum Numbers in a Loop
+          Task: Calculate Polynomial Sum
         </h2>
         <p className='mb-4'>
-          In this example, we'll use a for loop to add a number repeatedly. You
-          can set the start and end of the loop, choose the loop variable name,
-          and decide what number to add in each iteration.
+          In this example, we'll use a for loop to calculate the sum of a
+          polynomial expression for each value of the loop variable. The
+          polynomial is of the form ax² + bx + c.
         </p>
-        <CodeBlock>{`sum = 0
-FOR ${loopVariable} FROM ${loopStart} TO ${loopEnd - 1}
-    sum = sum + ${numberToAdd}
-    PRINT sum
+        <CodeBlock>{`result = 0
+FOR ${loopVariable} FROM ${loopStart} TO ${loopEnd}
+    term = ${a} * ${loopVariable}² + ${b} * ${loopVariable} + ${c}
+    result = result + term
+    PRINT result
 ENDFOR
-PRINT "Final sum: " + sum`}</CodeBlock>
+PRINT "Final result: " + result`}</CodeBlock>
       </div>
 
       <div className='mb-6'>
@@ -98,11 +102,29 @@ PRINT "Final sum: " + sum`}</CodeBlock>
             />
           </label>
           <label>
-            Number to add:
+            a:
             <input
               type='number'
-              value={numberToAdd}
-              onChange={(e) => setNumberToAdd(parseInt(e.target.value))}
+              value={a}
+              onChange={(e) => setA(parseInt(e.target.value))}
+              className='ml-2 p-1 border rounded w-16'
+            />
+          </label>
+          <label>
+            b:
+            <input
+              type='number'
+              value={b}
+              onChange={(e) => setB(parseInt(e.target.value))}
+              className='ml-2 p-1 border rounded w-16'
+            />
+          </label>
+          <label>
+            c:
+            <input
+              type='number'
+              value={c}
+              onChange={(e) => setC(parseInt(e.target.value))}
               className='ml-2 p-1 border rounded w-16'
             />
           </label>
@@ -116,10 +138,10 @@ PRINT "Final sum: " + sum`}</CodeBlock>
         </div>
 
         <div className='flex flex-wrap justify-center gap-2 mb-4'>
-          {Array.from({ length: loopEnd - loopStart }).map((_, index) => (
+          {Array.from({ length: loopEnd - loopStart + 1 }).map((_, index) => (
             <motion.div
               key={index}
-              className={`w-16 h-16 rounded-full flex flex-col items-center justify-center text-sm font-bold ${
+              className={`w-24 h-24 rounded-lg flex flex-col items-center justify-center text-sm font-bold ${
                 index + loopStart === currentIteration
                   ? 'bg-green-500 text-white'
                   : 'bg-gray-200'
@@ -129,8 +151,20 @@ PRINT "Final sum: " + sum`}</CodeBlock>
                 transition: { duration: 0.3 },
               }}
             >
-              <div>{index + loopStart}</div>
-              <div>{index + loopStart === currentIteration ? sum : ''}</div>
+              <div>
+                {loopVariable} = {index + loopStart}
+              </div>
+              <div>
+                Term:{' '}
+                {index + loopStart === currentIteration
+                  ? a * (index + loopStart) * (index + loopStart) +
+                    b * (index + loopStart) +
+                    c
+                  : ''}
+              </div>
+              <div>
+                Sum: {index + loopStart === currentIteration ? result : ''}
+              </div>
             </motion.div>
           ))}
         </div>
@@ -142,7 +176,7 @@ PRINT "Final sum: " + sum`}</CodeBlock>
             transition={{ duration: 0.5 }}
             className='bg-blue-100 p-4 rounded-lg text-center text-xl font-bold'
           >
-            Final Result: {sum}
+            Final Result: {result}
           </motion.div>
         )}
       </div>
@@ -154,16 +188,24 @@ PRINT "Final sum: " + sum`}</CodeBlock>
             The loop starts at {loopVariable} = {loopStart}
           </li>
           <li>
-            It continues as long as {loopVariable} is less than {loopEnd}
+            It continues as long as {loopVariable} is less than or equal to{' '}
+            {loopEnd}
           </li>
           <li>After each iteration, {loopVariable} is incremented by 1</li>
-          <li>In each iteration, we add {numberToAdd} to our sum</li>
-          <li>The loop runs {loopEnd - loopStart} times</li>
-          <li>The final sum after all iterations is displayed at the end</li>
+          <li>
+            In each iteration, we calculate {a}
+            {loopVariable}² + {b}
+            {loopVariable} + {c}
+          </li>
+          <li>We add this result to our running total</li>
+          <li>The loop runs {loopEnd - loopStart + 1} times</li>
+          <li>
+            The final sum of all these calculations is displayed at the end
+          </li>
         </ul>
       </div>
     </div>
   )
 }
 
-export default Lesson5
+export default Lesson6
