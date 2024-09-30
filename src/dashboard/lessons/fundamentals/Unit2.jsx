@@ -22,14 +22,14 @@ const Unit2 = () => {
 
   // Initialize local progress from global progress
   useEffect(() => {
-    const unitProgress = globalProgress[1] || 1 // Assuming unit 1 is at index 0
+    const unitProgress = globalProgress[2] || 2 // Assuming unit 1 is at index 0
     setLocalProgress(unitProgress)
   }, [globalProgress])
 
   // Update progress in context
   const updateProgress = (newProgress) => {
     setLocalProgress(newProgress)
-    dispatch({ type: 'UPDATE_PROGRESS', index: 1, progress: newProgress })
+    dispatch({ type: 'UPDATE_PROGRESS', index: 2, progress: newProgress })
   }
 
   // Handle navigation

@@ -104,3 +104,21 @@ html {
 .button-generic:active {
   border-bottom: 2px solid;
 }
+
+/* Add this CSS either globally or to a specific style file */
+/* Add this CSS either globally or to a specific style file */
+.bg-stars-pattern {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+      2px at 0% 0%,
+      white 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    radial-gradient(1px at 30% 20%, white 0%, rgba(255, 255, 255, 0) 100%),
+    radial-gradient(1.5px at 60% 40%, white 0%, rgba(255, 255, 255, 0) 100%),
+    radial-gradient(1px at 80% 80%, white 0%, rgba(255, 255, 255, 0) 100%);
+  background-size: 100px 100px;
+  opacity: 0.7; /* Slight opacity for a softer star effect */
+}
