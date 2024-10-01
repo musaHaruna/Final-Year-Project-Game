@@ -15,11 +15,13 @@ import {
   Unit4,
   Unit0,
 } from './dashboard/lessons/fundamentals/index'
+
 import Layout from './dashboard/layout/Layout'
 import PrivateRoute from './dashboard/pages/PrivateRoute' // Import the PrivateRoute component
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+ 
 
   // Check if the user is authenticated by checking localStorage
   useEffect(() => {

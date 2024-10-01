@@ -2,57 +2,56 @@ import React, { useState } from 'react'
 
 const quizQuestions = [
   {
-    question: 'What is programming?',
-    options: [
-      'Writing instructions for a computer',
-      'Talking to a computer',
-      'Making a computer run faster',
-      'Turning a computer off',
-    ],
-    correctAnswer: 'Writing instructions for a computer',
-  },
-  {
-    question: "What does 'print' do in programming?",
-    options: [
-      'It prints paper',
-      'It gives instructions to display text on the screen',
-      'It tells the computer to start a new task',
-      'It sends a message to another computer',
-    ],
-    correctAnswer: 'It gives instructions to display text on the screen',
-  },
-  {
     question: 'What is a variable in programming?',
     options: [
-      'A place to store instructions',
-      'A set of rules for the computer',
-      'A command to print text',
-      'A computer process',
+      'A box that holds information',
+      'A command to shut down the computer',
+      'A type of video game',
+      'A way to connect to the internet',
     ],
-    correctAnswer: 'A place to store instructions',
+    correctAnswer: 'A box that holds information',
   },
   {
-    question: 'Why do programmers use loops?',
+    question: 'What can we put inside a variable?',
     options: [
-      'To give repeated instructions to the computer',
-      'To stop the computer from working',
-      'To give a single instruction',
-      'To make the computer go faster',
+      'Numbers and words',
+      'Only pictures',
+      'Just games',
+      'Nothing at all',
     ],
-    correctAnswer: 'To give repeated instructions to the computer',
+    correctAnswer: 'Numbers and words',
   },
   {
-    question: 'What is an algorithm?',
+    question: 'Why do we use variables?',
     options: [
-      'A type of instruction that gives a step-by-step solution',
-      'A way to make computers smarter',
-      'A tool to fix bugs in programs',
-      'A program for creating pictures',
+      'To remember things in our programs',
+      'To make the computer faster',
+      'To keep the computer warm',
+      'To make videos',
     ],
-    correctAnswer: 'A type of instruction that gives a step-by-step solution',
+    correctAnswer: 'To remember things in our programs',
+  },
+  {
+    question: 'How can we change the value of a variable?',
+    options: [
+      'By giving it a new value',
+      'By turning off the computer',
+      'By closing the program',
+      'By waiting for a long time',
+    ],
+    correctAnswer: 'By giving it a new value',
+  },
+  {
+    question: 'What happens if we don’t use variables?',
+    options: [
+      'It’s hard to remember important information',
+      'The computer won’t work at all',
+      'We will have more fun',
+      'Everything will be faster',
+    ],
+    correctAnswer: 'It’s hard to remember important information',
   },
 ]
-
 
 const Lesson8 = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0)

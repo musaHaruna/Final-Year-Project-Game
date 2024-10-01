@@ -9,27 +9,27 @@ import dropSound from '../../../../../assets/sounds/generic/drop.mp3'
 
 const quizQuestions = [
   {
-    question: 'A computer needs clear instructions to _____ data.',
-    correctAnswer: 'store',
-    dragOptions: ['store', 'hold', 'move', 'ignore'],
+    question: 'A variable is like a box that can hold _____ inside it.',
+    correctAnswer: 'data',
+    dragOptions: ['data', 'toys', 'words', 'numbers'],
   },
   {
-    question: 'We can _____ instructions to make our code easier to use again.',
-    correctAnswer: 'reuse',
-    dragOptions: ['reuse', 'rewrite', 'skip', 'duplicate'],
+    question: 'We can _____ the value of a variable whenever we want.',
+    correctAnswer: 'change',
+    dragOptions: ['change', 'ignore', 'create', 'lose'],
   },
   {
-    question:
-      'To make a computer follow instructions repeatedly, we _____ them.',
-    correctAnswer: 'repeat',
-    dragOptions: ['repeat', 'skip', 'change', 'pause'],
+    question: 'To keep track of how many points we have, we use a _____.',
+    correctAnswer: 'variable',
+    dragOptions: ['variable', 'loop', 'function', 'number'],
   },
   {
-    question: 'A computer follows instructions to make important _____.',
-    correctAnswer: 'decisions',
-    dragOptions: ['decisions', 'errors', 'prints', 'loops'],
+    question: 'Variables help us remember important _____.',
+    correctAnswer: 'information',
+    dragOptions: ['information', 'colors', 'games', 'pictures'],
   },
 ]
+
 
 const Lesson7 = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0)

@@ -7,26 +7,27 @@ import wrongSound from '../../../../../assets/sounds/encouragement/error.mp3'
 
 const quizQuestions = [
   {
-    question: 'Match the correct definitions.',
+    question: 'Match the definition of variables with their meanings.',
     leftOptions: [
-      'A computer needs clear instructions to store data.',
-      'We can reuse instructions to make tasks easier.',
-      'To make a computer follow instructions repeatedly, we repeat them.',
-      'A computer follows instructions to make important decisions.',
+      'A variable is like a box that can hold a value.',
+      'We can change what’s inside the box whenever we want.',
+      'Variables help us remember information in our programs.',
+      'Using variables makes it easier to work with data.',
     ],
-    rightOptions: ['reuse', 'decisions', 'repeat', 'store'],
+    rightOptions: ['box', 'change', 'remember', 'easier'],
   },
   {
-    question: 'Match the correct definitions.',
+    question: 'Match the use of variables with their examples.',
     leftOptions: [
-      'A computer processes instructions to perform tasks.',
-      'Instructions must be clear for the computer to understand them.',
-      'We can combine multiple instructions to achieve complex tasks.',
-      'Programming allows us to give instructions that automate tasks.',
+      'A variable can hold a number, like your age.',
+      'We can use a variable to keep track of points in a game.',
+      'A variable can hold a name, like your favorite pet.',
+      'Variables can store different types of information, like words and numbers.',
     ],
-    rightOptions: ['combine', 'understand', 'perform tasks', 'automate'],
+    rightOptions: ['age', 'points', 'name', 'different types'],
   },
 ]
+
 
 const Lesson6 = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0)

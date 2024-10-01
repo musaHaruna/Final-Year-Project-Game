@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom' // Import useNavigate
 import { useProgress } from '../../../context/ProgressContext'
 import { usePoints } from '../../../context/PontsProvider'
 import {
@@ -34,6 +35,7 @@ const Unit1 = () => {
   const { points, addPoints, deductPoints } = usePoints() // Use the points context
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0)
   const [localProgress, setLocalProgress] = useState(0)
+  const navigate = useNavigate() // Initialize useNavigate
 
   useEffect(() => {
     const unitProgress = globalProgress[1] || 1
@@ -50,14 +52,16 @@ const Unit1 = () => {
       setCurrentLessonIndex((prev) => prev + 1)
       const newProgress = Math.min(localProgress + progressIncrement, 100)
       updateProgress(newProgress)
-      // Add points when progressing
     } else {
       updateProgress(100)
+      navigate('/') // Navigate to next route after completing the last lesson
     }
   }
 
   const handlePrevious = () => {
-    if (currentLessonIndex > 0) {
+    if (currentLessonIndex === 0) {
+      navigate('/') // Navigate to home if on the first lesson and "Previous" is clicked
+    } else {
       setCurrentLessonIndex((prev) => prev - 1)
       const newProgress = Math.max(localProgress - progressIncrement, 0)
       updateProgress(newProgress)

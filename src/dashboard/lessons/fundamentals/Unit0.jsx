@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom' // Import useNavigate
 import { useProgress } from '../../../context/ProgressContext'
 import PointsDisplay from '../../../components/reusabale-ui/PointsDisplay'
 import {
@@ -21,6 +22,7 @@ const Unit0 = () => {
   const { state: globalProgress, dispatch } = useProgress() // Access progress context
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0)
   const [localProgress, setLocalProgress] = useState(0)
+  const navigate = useNavigate() // Initialize useNavigate
 
   // Initialize local progress from global progress
   useEffect(() => {
@@ -43,11 +45,15 @@ const Unit0 = () => {
     } else {
       // Ensure progress is set to 100% when reaching the final lesson
       updateProgress(100)
+      navigate('/') // Navigate to the next route after the last lesson
     }
   }
 
   const handlePrevious = () => {
-    if (currentLessonIndex > 0) {
+    if (currentLessonIndex === 0) {
+      // Navigate to home if on the first lesson and "Previous" is clicked
+      navigate('/')
+    } else {
       setCurrentLessonIndex((prev) => prev - 1)
       const newProgress = Math.max(localProgress - progressIncrement, 0)
       updateProgress(newProgress)
@@ -90,7 +96,10 @@ const Unit0 = () => {
             textColor=' text-gray-700'
             shadowColor='text-gray-700'
             onClick={handleNext}
-            disabled={currentLessonIndex === lessonComponents.length - 1}
+            disabled={
+              currentLessonIndex === lessonComponents.length - 1 &&
+              localProgress === 100
+            }
           />
         </div>
       </div>
