@@ -2,57 +2,57 @@ import React, { useState } from 'react'
 
 const quizQuestions = [
   {
-    question: 'What is programming?',
+    question: 'What is a conditional statement in programming?',
     options: [
-      'Writing instructions for a computer',
-      'Talking to a computer',
-      'Making a computer run faster',
-      'Turning a computer off',
+      'A way to make choices in our code',
+      'A type of math operation',
+      'A command to print something',
+      'A way to stop the program',
     ],
-    correctAnswer: 'Writing instructions for a computer',
+    correctAnswer: 'A way to make choices in our code',
   },
   {
-    question: "What does 'print' do in programming?",
+    question: 'What does the word “if” do in a conditional?',
     options: [
-      'It prints paper',
-      'It gives instructions to display text on the screen',
-      'It tells the computer to start a new task',
-      'It sends a message to another computer',
+      'Checks if a condition is true',
+      'Makes the program run faster',
+      'Prints a message on the screen',
+      'Ends the program',
     ],
-    correctAnswer: 'It gives instructions to display text on the screen',
+    correctAnswer: 'Checks if a condition is true',
   },
   {
-    question: 'What is a variable in programming?',
+    question: 'What is the purpose of an “else” statement?',
     options: [
-      'A place to store instructions',
-      'A set of rules for the computer',
-      'A command to print text',
-      'A computer process',
+      'To tell the computer what to do if the condition is false',
+      'To repeat the instructions',
+      'To create a new variable',
+      'To print a message',
     ],
-    correctAnswer: 'A place to store instructions',
+    correctAnswer: 'To tell the computer what to do if the condition is false',
   },
   {
-    question: 'Why do programmers use loops?',
+    question: 'In programming, what do we use conditionals for?',
     options: [
-      'To give repeated instructions to the computer',
-      'To stop the computer from working',
-      'To give a single instruction',
-      'To make the computer go faster',
+      'To make decisions based on different situations',
+      'To store data',
+      'To create loops',
+      'To run the program faster',
     ],
-    correctAnswer: 'To give repeated instructions to the computer',
+    correctAnswer: 'To make decisions based on different situations',
   },
   {
-    question: 'What is an algorithm?',
+    question:
+      'Which of the following is an example of a conditional statement?',
     options: [
-      'A type of instruction that gives a step-by-step solution',
-      'A way to make computers smarter',
-      'A tool to fix bugs in programs',
-      'A program for creating pictures',
+      'If it is sunny, wear sunglasses.',
+      'I love ice cream.',
+      'The sky is blue.',
+      'Let’s play a game.',
     ],
-    correctAnswer: 'A type of instruction that gives a step-by-step solution',
+    correctAnswer: 'If it is sunny, wear sunglasses.',
   },
 ]
-
 
 const Lesson8 = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0)

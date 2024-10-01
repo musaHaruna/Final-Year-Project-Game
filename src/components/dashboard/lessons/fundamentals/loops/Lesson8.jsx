@@ -2,57 +2,56 @@ import React, { useState } from 'react'
 
 const quizQuestions = [
   {
-    question: 'What is programming?',
+    question: 'What is a loop in programming?',
     options: [
-      'Writing instructions for a computer',
-      'Talking to a computer',
-      'Making a computer run faster',
-      'Turning a computer off',
+      'A way to repeat instructions',
+      'A command to store data',
+      'A method to turn off the computer',
+      'A tool for creating pictures',
     ],
-    correctAnswer: 'Writing instructions for a computer',
+    correctAnswer: 'A way to repeat instructions',
   },
   {
-    question: "What does 'print' do in programming?",
+    question: 'Why do we use loops in programming?',
     options: [
-      'It prints paper',
-      'It gives instructions to display text on the screen',
-      'It tells the computer to start a new task',
-      'It sends a message to another computer',
-    ],
-    correctAnswer: 'It gives instructions to display text on the screen',
-  },
-  {
-    question: 'What is a variable in programming?',
-    options: [
-      'A place to store instructions',
-      'A set of rules for the computer',
-      'A command to print text',
-      'A computer process',
-    ],
-    correctAnswer: 'A place to store instructions',
-  },
-  {
-    question: 'Why do programmers use loops?',
-    options: [
-      'To give repeated instructions to the computer',
+      'To make our code shorter and easier to manage',
+      'To add more instructions to the code',
+      'To make the computer run slower',
       'To stop the computer from working',
-      'To give a single instruction',
-      'To make the computer go faster',
     ],
-    correctAnswer: 'To give repeated instructions to the computer',
+    correctAnswer: 'To make our code shorter and easier to manage',
   },
   {
-    question: 'What is an algorithm?',
+    question: 'What is a “for” loop used for?',
     options: [
-      'A type of instruction that gives a step-by-step solution',
-      'A way to make computers smarter',
-      'A tool to fix bugs in programs',
-      'A program for creating pictures',
+      'To repeat a set of instructions a specific number of times',
+      'To check conditions only once',
+      'To change variables randomly',
+      'To create graphics on the screen',
     ],
-    correctAnswer: 'A type of instruction that gives a step-by-step solution',
+    correctAnswer: 'To repeat a set of instructions a specific number of times',
+  },
+  {
+    question: 'What does a “while” loop do?',
+    options: [
+      'Repeats instructions as long as a condition is true',
+      'Runs instructions only once',
+      'Creates new variables',
+      'Stops the program from running',
+    ],
+    correctAnswer: 'Repeats instructions as long as a condition is true',
+  },
+  {
+    question: 'Which of the following is an example of using a loop?',
+    options: [
+      'Counting from 1 to 10',
+      'Storing data in a variable',
+      'Printing a single message',
+      'Turning the computer off',
+    ],
+    correctAnswer: 'Counting from 1 to 10',
   },
 ]
-
 
 const Lesson8 = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0)

@@ -9,25 +9,27 @@ import dropSound from '../../../../../assets/sounds/generic/drop.mp3'
 
 const quizQuestions = [
   {
-    question: 'A computer needs clear instructions to _____ data.',
-    correctAnswer: 'store',
-    dragOptions: ['store', 'hold', 'move', 'ignore'],
+    question:
+      'A variable can hold a number we want to _____ in our math problems.',
+    correctAnswer: 'use',
+    dragOptions: ['use', 'ignore', 'move', 'change'],
   },
   {
-    question: 'We can _____ instructions to make our code easier to use again.',
-    correctAnswer: 'reuse',
-    dragOptions: ['reuse', 'rewrite', 'skip', 'duplicate'],
+    question: 'When we add two variables together, we get a new _____.',
+    correctAnswer: 'value',
+    dragOptions: ['value', 'variable', 'instruction', 'number'],
   },
   {
     question:
-      'To make a computer follow instructions repeatedly, we _____ them.',
-    correctAnswer: 'repeat',
-    dragOptions: ['repeat', 'skip', 'change', 'pause'],
+      'We can _____ the value of a variable by changing what’s inside it.',
+    correctAnswer: 'update',
+    dragOptions: ['update', 'freeze', 'delete', 'ignore'],
   },
   {
-    question: 'A computer follows instructions to make important _____.',
-    correctAnswer: 'decisions',
-    dragOptions: ['decisions', 'errors', 'prints', 'loops'],
+    question:
+      'If we have 5 apples in a variable and add 3 more, we now have _____ apples.',
+    correctAnswer: '8',
+    dragOptions: ['8', '5', '3', '10'],
   },
 ]
 

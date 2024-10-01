@@ -11,11 +11,24 @@ import {
   Lesson4,
   Lesson5,
   Lesson6,
+  LoopVisualizer,
+  Lesson7,
+  Lesson8,
 } from '../../../components/dashboard/lessons/fundamentals/loops'
 import { usePoints } from '../../../context/PontsProvider'
 import PointsDisplay from '../../../components/reusabale-ui/PointsDisplay'
 
-const lessonComponents = [Lesson1, Lesson2, Lesson3, Lesson4, Lesson5, Lesson6]
+const lessonComponents = [
+  Lesson1,
+  Lesson2,
+  Lesson3,
+  Lesson4,
+  Lesson5,
+  Lesson6,
+  LoopVisualizer,
+  Lesson7,
+  Lesson8,
+]
 const progressIncrement = 100 / (lessonComponents.length - 1)
 
 const Unit4 = () => {

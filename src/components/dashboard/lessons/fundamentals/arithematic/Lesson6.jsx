@@ -7,24 +7,34 @@ import wrongSound from '../../../../../assets/sounds/encouragement/error.mp3'
 
 const quizQuestions = [
   {
-    question: 'Match the correct definitions.',
+    question: 'Match the correct definitions about variables and arithmetic.',
     leftOptions: [
-      'A computer needs clear instructions to store data.',
-      'We can reuse instructions to make tasks easier.',
-      'To make a computer follow instructions repeatedly, we repeat them.',
-      'A computer follows instructions to make important decisions.',
+      'A variable can hold a number we want to use in calculations.',
+      'We can add or subtract values stored in variables.',
+      'Using variables helps us keep track of scores in games.',
+      'A variable can change its value whenever we need.',
     ],
-    rightOptions: ['reuse', 'decisions', 'repeat', 'store'],
+    rightOptions: [
+      'hold a number',
+      'add or subtract',
+      'track scores',
+      'change value',
+    ],
   },
   {
-    question: 'Match the correct definitions.',
+    question: 'Match the arithmetic operations with their descriptions.',
     leftOptions: [
-      'A computer processes instructions to perform tasks.',
-      'Instructions must be clear for the computer to understand them.',
-      'We can combine multiple instructions to achieve complex tasks.',
-      'Programming allows us to give instructions that automate tasks.',
+      'Addition is when we put two numbers together.',
+      'Subtraction is when we take one number away from another.',
+      'Multiplication is like repeated addition.',
+      'Division is splitting a number into equal parts.',
     ],
-    rightOptions: ['combine', 'understand', 'perform tasks', 'automate'],
+    rightOptions: [
+      'put together',
+      'take away',
+      'repeated addition',
+      'split into parts',
+    ],
   },
 ]
 

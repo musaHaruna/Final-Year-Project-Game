@@ -2,57 +2,52 @@ import React, { useState } from 'react'
 
 const quizQuestions = [
   {
-    question: 'What is programming?',
-    options: [
-      'Writing instructions for a computer',
-      'Talking to a computer',
-      'Making a computer run faster',
-      'Turning a computer off',
-    ],
-    correctAnswer: 'Writing instructions for a computer',
-  },
-  {
-    question: "What does 'print' do in programming?",
-    options: [
-      'It prints paper',
-      'It gives instructions to display text on the screen',
-      'It tells the computer to start a new task',
-      'It sends a message to another computer',
-    ],
-    correctAnswer: 'It gives instructions to display text on the screen',
-  },
-  {
     question: 'What is a variable in programming?',
     options: [
-      'A place to store instructions',
-      'A set of rules for the computer',
+      'A box that holds a number or word',
+      'A type of video game',
       'A command to print text',
-      'A computer process',
+      'A computer error',
     ],
-    correctAnswer: 'A place to store instructions',
+    correctAnswer: 'A box that holds a number or word',
   },
   {
-    question: 'Why do programmers use loops?',
+    question: 'What can we store in a variable?',
     options: [
-      'To give repeated instructions to the computer',
-      'To stop the computer from working',
-      'To give a single instruction',
+      'Numbers and words',
+      'Only pictures',
+      'Just games',
+      'Nothing at all',
+    ],
+    correctAnswer: 'Numbers and words',
+  },
+  {
+    question: 'Why do we use variables in math problems?',
+    options: [
+      'To remember important values',
       'To make the computer go faster',
+      'To write instructions',
+      'To create pictures',
     ],
-    correctAnswer: 'To give repeated instructions to the computer',
+    correctAnswer: 'To remember important values',
   },
   {
-    question: 'What is an algorithm?',
+    question:
+      'If we have a variable with the number 10 and we add 5, what is the new value?',
+    options: ['15', '5', '10', '20'],
+    correctAnswer: '15',
+  },
+  {
+    question: 'What happens if we change the value of a variable?',
     options: [
-      'A type of instruction that gives a step-by-step solution',
-      'A way to make computers smarter',
-      'A tool to fix bugs in programs',
-      'A program for creating pictures',
+      'It can hold a different number or word',
+      'It disappears forever',
+      'It makes the program slow',
+      'It turns off the computer',
     ],
-    correctAnswer: 'A type of instruction that gives a step-by-step solution',
+    correctAnswer: 'It can hold a different number or word',
   },
 ]
-
 
 const Lesson8 = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0)

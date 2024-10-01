@@ -9,27 +9,33 @@ import dropSound from '../../../../../assets/sounds/generic/drop.mp3'
 
 const quizQuestions = [
   {
-    question: 'A computer needs clear instructions to _____ data.',
-    correctAnswer: 'store',
-    dragOptions: ['store', 'hold', 'move', 'ignore'],
+    question: 'A loop is used to repeat a set of _____ multiple times.',
+    correctAnswer: 'instructions',
+    dragOptions: ['instructions', 'variables', 'errors', 'functions'],
   },
   {
-    question: 'We can _____ instructions to make our code easier to use again.',
-    correctAnswer: 'reuse',
-    dragOptions: ['reuse', 'rewrite', 'skip', 'duplicate'],
+    question: 'We use a loop to avoid _____ the same code again and again.',
+    correctAnswer: 'writing',
+    dragOptions: ['writing', 'skipping', 'reading', 'changing'],
   },
   {
     question:
-      'To make a computer follow instructions repeatedly, we _____ them.',
-    correctAnswer: 'repeat',
-    dragOptions: ['repeat', 'skip', 'change', 'pause'],
+      'In programming, a “for” loop helps us repeat instructions a _____ number of times.',
+    correctAnswer: 'specific',
+    dragOptions: ['specific', 'random', 'none', 'few'],
   },
   {
-    question: 'A computer follows instructions to make important _____.',
-    correctAnswer: 'decisions',
-    dragOptions: ['decisions', 'errors', 'prints', 'loops'],
+    question: 'A “while” loop continues as long as a certain _____ is true.',
+    correctAnswer: 'condition',
+    dragOptions: ['condition', 'variable', 'function', 'number'],
+  },
+  {
+    question: 'When we use loops, we can save time and _____ in our code.',
+    correctAnswer: 'effort',
+    dragOptions: ['effort', 'money', 'space', 'time'],
   },
 ]
+
 
 const Lesson7 = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0)

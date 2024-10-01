@@ -9,25 +9,34 @@ import dropSound from '../../../../../assets/sounds/generic/drop.mp3'
 
 const quizQuestions = [
   {
-    question: 'A computer needs clear instructions to _____ data.',
-    correctAnswer: 'store',
-    dragOptions: ['store', 'hold', 'move', 'ignore'],
-  },
-  {
-    question: 'We can _____ instructions to make our code easier to use again.',
-    correctAnswer: 'reuse',
-    dragOptions: ['reuse', 'rewrite', 'skip', 'duplicate'],
+    question:
+      'A conditional statement helps the computer make a _____ based on conditions.',
+    correctAnswer: 'decision',
+    dragOptions: ['decision', 'mistake', 'action', 'loop'],
   },
   {
     question:
-      'To make a computer follow instructions repeatedly, we _____ them.',
-    correctAnswer: 'repeat',
-    dragOptions: ['repeat', 'skip', 'change', 'pause'],
+      'If it is raining, we can use a conditional to say “wear a _____.”',
+    correctAnswer: 'jacket',
+    dragOptions: ['jacket', 'hat', 'sunglasses', 'scarf'],
   },
   {
-    question: 'A computer follows instructions to make important _____.',
-    correctAnswer: 'decisions',
-    dragOptions: ['decisions', 'errors', 'prints', 'loops'],
+    question:
+      'We use the word “if” to check a condition and decide what to _____.',
+    correctAnswer: 'do',
+    dragOptions: ['do', 'stop', 'say', 'print'],
+  },
+  {
+    question:
+      'An “else” statement tells the computer what to do when the condition is _____.',
+    correctAnswer: 'false',
+    dragOptions: ['false', 'true', 'ignored', 'skipped'],
+  },
+  {
+    question:
+      'Using conditionals, we can make our programs _____ and respond to different situations.',
+    correctAnswer: 'smart',
+    dragOptions: ['smart', 'fast', 'slow', 'confusing'],
   },
 ]
 
