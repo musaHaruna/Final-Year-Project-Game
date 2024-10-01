@@ -17,6 +17,7 @@ import {
 } from '../../../components/dashboard/lessons/fundamentals/loops'
 import { usePoints } from '../../../context/PontsProvider'
 import PointsDisplay from '../../../components/reusabale-ui/PointsDisplay'
+import { useNavigate } from 'react-router-dom'
 
 const lessonComponents = [
   Lesson1,
@@ -36,6 +37,7 @@ const Unit4 = () => {
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0)
   const [localProgress, setLocalProgress] = useState(0)
 
+  const navigate = useNavigate()
   // Initialize local progress from global progress
   useEffect(() => {
     const unitProgress = globalProgress[4] || 4 // Assuming unit 1 is at index 0
@@ -57,11 +59,14 @@ const Unit4 = () => {
     } else {
       // Ensure progress is set to 100% when reaching the final lesson
       updateProgress(100)
+      navigate('/')
     }
   }
 
   const handlePrevious = () => {
-    if (currentLessonIndex > 0) {
+    if (currentLessonIndex === 0) {
+      navigate('/') // Navigate to home if on the first lesson and "Previous" is clicked
+    } else {
       setCurrentLessonIndex((prev) => prev - 1)
       const newProgress = Math.max(localProgress - progressIncrement, 0)
       updateProgress(newProgress)
