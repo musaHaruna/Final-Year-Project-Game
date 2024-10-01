@@ -22,7 +22,9 @@ const Signin = () => {
     const user = existingUsers.find((user) => user.email === email)
 
     if (!user) {
-      setErrorMessage('No account found with this email. Please sign up.')
+      setErrorMessage(
+        'No account found with this email. Please create an account.'
+      )
       return
     }
 

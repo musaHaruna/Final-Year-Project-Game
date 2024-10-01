@@ -42,7 +42,7 @@ const Home = () => {
           {/* Hero Text and Buttons */}
           <div className='text-white text-center'>
             <h1 className='text-4xl font-bold mb-8'>
-              The fun and engaging way to learn programming for kids!
+              The fun and engaging way to learn programming for Beginners!
             </h1>
             <div
               style={{

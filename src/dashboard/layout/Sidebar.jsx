@@ -28,35 +28,6 @@ const Sidebar = () => {
             <span className='uppercase'>Learn</span>
           </NavLink>
         </li>
-        <li>
-          <NavLink
-            to='/practice'
-            className={({ isActive }) =>
-              isActive
-                ? 'flex items-center space-x-2 text-blue-500 bg-blue-100 rounded-lg p-2'
-                : 'flex items-center space-x-2 text-gray-700 hover:bg-gray-100 rounded-lg p-2'
-            }
-            onClick={playPopSound} // Add the onClick handler
-          >
-            <img src={Dumbbell} alt='Practice Icon' className='w-6 h-6' />
-            <span className='uppercase'>Practice</span>
-          </NavLink>
-        </li>
-
-        <li>
-          <NavLink
-            to='/shop'
-            className={({ isActive }) =>
-              isActive
-                ? 'flex items-center space-x-2 text-blue-500 bg-blue-100 rounded-lg p-2'
-                : 'flex items-center space-x-2 text-gray-700 hover:bg-gray-100 rounded-lg p-2'
-            }
-            onClick={playPopSound} // Add the onClick handler
-          >
-            <img src={Shop} alt='Shop Icon' className='w-6 h-6' />
-            <span className='uppercase'>Shop</span>
-          </NavLink>
-        </li>
       </ul>
     </nav>
   )
