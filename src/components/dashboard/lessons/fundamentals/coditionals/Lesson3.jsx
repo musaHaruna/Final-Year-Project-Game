@@ -36,11 +36,12 @@ const Lesson3 = () => {
   const [stepIndex, setStepIndex] = useState(0)
   const [animationData, setAnimationData] = useState(null)
   const [startAnimation, setStartAnimation] = useState('')
+  const [errors, setErrors] = useState([]) // State for errors
   const dotLottieRef = useRef(null)
 
   const handlePlayLesson4 = (workspace, setOutput) => {
     let variables = {}
-    let errors = []
+    let tempErrors = [] // Temporary array for errors
     let displayC = false
     let conditionalBlock = null
     let elseBlock = null
@@ -48,9 +49,9 @@ const Lesson3 = () => {
     workspace.forEach((item) => {
       if (item.type === 'number A =' || item.type === 'number B =') {
         if (item.value.trim() === '') {
-          errors.push(`Please input a value for ${item.type}`)
+          tempErrors.push(`Please input a value for ${item.type}`)
         } else if (isNaN(Number(item.value.trim()))) {
-          errors.push(`Value for ${item.type} should be a number`)
+          tempErrors.push(`Value for ${item.type} should be a number`)
         } else {
           variables[item.type.split('=')[0].trim()] = {
             type: 'number',
@@ -59,7 +60,7 @@ const Lesson3 = () => {
         }
       } else if (item.type === 'number C = [A] + [B]') {
         if (!variables['number A'] || !variables['number B']) {
-          errors.push(
+          tempErrors.push(
             `Define both 'number A =' and 'number B =' before using 'number C ='`
           )
         } else {
@@ -83,7 +84,7 @@ const Lesson3 = () => {
             actions: [],
           }
         } catch (e) {
-          errors.push(`Invalid condition: ${item.type}`)
+          tempErrors.push(`Invalid condition: ${item.type}`)
         }
       } else if (item.type === 'else') {
         elseBlock = {
@@ -95,15 +96,19 @@ const Lesson3 = () => {
         } else if (elseBlock) {
           elseBlock.actions.push(item.type.slice(8).replace(/"/g, ''))
         } else {
-          errors.push(`'display' actions should be inside a conditional block`)
+          tempErrors.push(
+            `'display' actions should be inside a conditional block`
+          )
         }
       } else {
-        errors.push(`Unexpected variable type: ${item.type}`)
+        tempErrors.push(`Unexpected variable type: ${item.type}`)
       }
     })
 
-    if (errors.length > 0) {
-      setOutput(`Errors: ${errors.join('; ')}`)
+    // Only display output if there are no errors
+    setErrors(tempErrors) // Set the errors in the state
+    if (tempErrors.length > 0) {
+      setOutput(`Errors: ${tempErrors.join('; ')}`)
     } else {
       let result = ''
       if (conditionalBlock) {
@@ -114,13 +119,9 @@ const Lesson3 = () => {
         }
       }
 
-      if (displayC) {
-        const cValue = variables['number C']?.value
-        result += `${successMessage} C = ${cValue}`
-        setStartAnimation(successMessage)
-      }
-
+      // Set output only after checking all conditions and variables
       setOutput(result)
+      setStartAnimation(successMessage)
     }
   }
 
@@ -214,6 +215,7 @@ const Lesson3 = () => {
           <Lottie options={defaultOptions} height={400} width={400} />
         </div>
       )}
+      {/* Display errors if there are any */}
     </div>
   )
 }

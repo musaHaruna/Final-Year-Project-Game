@@ -12,9 +12,21 @@ import {
   Lesson3,
   Lesson4,
   Lesson5,
+  Lesson6,
+  Lesson7,
+  Lesson8,
 } from '../../../components/dashboard/lessons/fundamentals/arithematic/index'
 
-const lessonComponents = [Lesson1, Lesson2, Lesson3, Lesson4, Lesson5]
+const lessonComponents = [
+  Lesson1,
+  Lesson2,
+  Lesson3,
+  Lesson4,
+  Lesson5,
+  Lesson6,
+  Lesson7,
+  Lesson8,
+]
 const progressIncrement = 100 / (lessonComponents.length - 1)
 
 const Unit2 = () => {

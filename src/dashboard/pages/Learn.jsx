@@ -56,6 +56,12 @@ const Learn = () => {
       textColor: '#6b7280',
       icon: <Icon icon='solar:book-outline' />,
     },
+    {
+      text: 'GUIDE',
+      buttonColor: '#d1d5db',
+      textColor: '#6b7280',
+      icon: <Icon icon='solar:book-outline' />,
+    },
   ]
 
   return (

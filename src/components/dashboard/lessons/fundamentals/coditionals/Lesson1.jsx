@@ -88,7 +88,12 @@ const Lesson1 = () => {
 
   return (
     <div>
-      <h1 className='text-3xl font-bold mb-6 text-center'>Is the Sky Blue?</h1>
+      <h1 className='text-3xl font-bold mb-6 text-center'>Conditionals?</h1>
+      <p className='text-lg mb-4'>
+        Conditionals are like a traffic light for decisions: they help us choose
+        what to do based on different situations. For example, if it’s sunny,
+        you go outside; if it’s raining, you stay in
+      </p>
       <p className='text-lg mb-4'>
         Drag and drop to answer the question: Is the sky blue?
       </p>

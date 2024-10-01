@@ -11,10 +11,22 @@ import {
   Lesson3,
   Lesson4,
   Lesson5,
+  Lesson6,
+  Lesson7,
+  Lesson8,
 } from '../../../components/dashboard/lessons/fundamentals/variables/index'
 import PointsDisplay from '../../../components/reusabale-ui/PointsDisplay'
 
-const lessonComponents = [Lesson1, Lesson2, Lesson3, Lesson4, Lesson5]
+const lessonComponents = [
+  Lesson1,
+  Lesson2,
+  Lesson3,
+  Lesson4,
+  Lesson5,
+  Lesson6,
+  Lesson7,
+  Lesson8,
+]
 const progressIncrement = 100 / (lessonComponents.length - 1)
 
 const Unit1 = () => {
@@ -38,7 +50,7 @@ const Unit1 = () => {
       setCurrentLessonIndex((prev) => prev + 1)
       const newProgress = Math.min(localProgress + progressIncrement, 100)
       updateProgress(newProgress)
-      addPoints(10) // Add points when progressing
+      // Add points when progressing
     } else {
       updateProgress(100)
     }

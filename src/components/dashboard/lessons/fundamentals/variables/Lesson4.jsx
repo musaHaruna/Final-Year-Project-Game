@@ -5,7 +5,7 @@ import successAnimation1 from '../../../../../assets/animations/encouragements/e
 import successAnimation2 from '../../../../../assets/animations/encouragements/good-job.json'
 import successAnimation3 from '../../../../../assets/animations/encouragements/nice.json'
 import tryAgainAnimation from '../../../../../assets/animations/encouragements/try-again.json'
-import character from '../../../../../assets/animations/fundamentals/character.lottie'
+import character from '../../../../../assets/animations/fundamentals/running.lottie'
 
 const elements = [
   { variable: 'string A =' },
@@ -155,8 +155,8 @@ const Lesson4 = () => {
         Storing values in a variable
       </h2>
       <p className='text-center'>
-        <span className='font-bold'>Mission:</span> Store variables in
-        programming
+        <span className='font-bold'>Mission:</span> Store values and display
+        them in programming and make the character start running
       </p>
       <Lesson
         elements={elements}

@@ -5,7 +5,7 @@ import successAnimation1 from '../../../../../assets/animations/encouragements/e
 import successAnimation2 from '../../../../../assets/animations/encouragements/good-job.json'
 import successAnimation3 from '../../../../../assets/animations/encouragements/nice.json'
 import tryAgainAnimation from '../../../../../assets/animations/encouragements/try-again.json'
-import character from '../../../../../assets/animations/fundamentals/character.lottie'
+import character from '../../../../../assets/animations/fundamentals/running.lottie'
 
 const elements = [
   { variable: 'number A =' },
