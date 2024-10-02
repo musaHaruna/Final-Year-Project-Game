@@ -68,7 +68,7 @@ const Learn = () => {
     <div>
       <UnitCard
         heading='Unit 1'
-        paragraph='Form basic sentences, greet people'
+        paragraph='Introduction to programming, variables, conditionals and loops '
         bgColor='bg-green-500'
         textColor='text-white'
         buttonProps={{

@@ -8,12 +8,30 @@ const Signin = () => {
   const [errorMessage, setErrorMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false) // Loading state
 
+  // Email validation function using a regex pattern
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
   const handleLogin = (e) => {
     e.preventDefault()
 
     // Validation: Check if email and password are provided
     if (!email || !password) {
       setErrorMessage('Please enter both email and password.')
+      return
+    }
+
+    // Validate email format
+    if (!isValidEmail(email)) {
+      setErrorMessage('Please enter a valid email address.')
+      return
+    }
+
+    // Validate password length (minimum 8 characters)
+    if (password.length < 8) {
+      setErrorMessage('Password must be at least 8 characters long.')
       return
     }
 
@@ -45,7 +63,7 @@ const Signin = () => {
 
       // Navigate to the dashboard or homepage after successful login
       setIsLoading(false)
-      navigate('/') // Replace '/dashboard' with your desired route
+      navigate('/') // Replace '/' with your desired route
     }, 2000) // Simulate a 2-second delay for the loading process
   }
 
